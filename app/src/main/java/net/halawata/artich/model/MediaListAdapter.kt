@@ -1,4 +1,4 @@
-package net.halawata.artich
+package net.halawata.artich.model
 
 import android.app.Activity
 import android.content.Context
@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import net.halawata.artich.R
 import net.halawata.artich.entity.Article
 import java.util.*
 
-class CuratorListAdaptor<T: Article>(val context: Context, var data: ArrayList<T>, val resource: Int): BaseAdapter() {
+class MediaListAdapter<T: Article>(val context: Context, var data: ArrayList<T>, val resource: Int): BaseAdapter() {
 
     override fun getCount(): Int {
         return data.size
