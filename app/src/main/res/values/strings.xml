@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Artich</string>
     <string name="hatena_list_activity_name">はてなブックマーク</string>
+    <string name="qiita_list_activity_name">Qiita</string>
 </resources>
