@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".QiitaListActivity">
         </activity>
+        <activity android:name=".GNewsListActivity">
+        </activity>
     </application>
 
 </manifest>
