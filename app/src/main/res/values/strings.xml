@@ -3,4 +3,7 @@
     <string name="hatena_list_activity_name">はてなブックマーク</string>
     <string name="qiita_list_activity_name">Qiita</string>
     <string name="gnews_list_activity_name">Googleニュース</string>
+    <string name="hatena_tab_name">はてなブックマーク</string>
+    <string name="qiita_tab_name">Qiita</string>
+    <string name="gnews_tab_name">Googleニュース</string>
 </resources>
