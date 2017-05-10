@@ -12,19 +12,24 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import net.halawata.artich.entity.GNewsArticle
+import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.MediaListAdapter
 import net.halawata.artich.model.list.GNewsList
 
-class GNewsListFragment : Fragment(), ListActivityInterface {
+class GNewsListFragment : Fragment(), ListFragmentInterface {
 
     override val list = GNewsList()
+
+    lateinit var selectedTitle: String
 
     lateinit var listView: ListView
 
     var adapter: MediaListAdapter<GNewsArticle>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        selectedTitle = resources.getString(R.string.new_entry)
+
         super.onCreate(savedInstanceState)
     }
 
@@ -36,19 +41,22 @@ class GNewsListFragment : Fragment(), ListActivityInterface {
         adapter = MediaListAdapter(context, data, R.layout.list_item)
         listView.adapter = adapter
 
-        val asyncNetWorkTask = AsyncNetworkTask(this)
-        asyncNetWorkTask.execute("https://news.google.com/news?hl=ja&ned=us&ie=UTF-8&oe=UTF-8&output=rss&topic=t")
+        request(ApiUrlString.GNews.newEntry)
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val text = ((view as LinearLayout).getChildAt(1) as TextView).text as String
 
             Uri.parse(text).let {
-                val intent = Intent(Intent.ACTION_VIEW, it)
-                startActivity(intent)
+                startActivity(Intent(Intent.ACTION_VIEW, it))
             }
         }
 
         return view
+    }
+
+    override fun request(urlString: String) {
+        val asyncNetWorkTask = AsyncNetworkTask(this)
+        asyncNetWorkTask.execute(urlString)
     }
 
     override fun updateList(content: String) {

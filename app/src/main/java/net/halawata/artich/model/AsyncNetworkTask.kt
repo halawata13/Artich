@@ -1,14 +1,14 @@
 package net.halawata.artich.model
 
 import android.os.AsyncTask
-import net.halawata.artich.ListActivityInterface
+import net.halawata.artich.ListFragmentInterface
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class AsyncNetworkTask(val activity: ListActivityInterface): AsyncTask<String, Int, String>() {
+class AsyncNetworkTask(val fragment: ListFragmentInterface): AsyncTask<String, Int, String>() {
 
     override fun doInBackground(vararg params: String?): String {
         var content = ""
@@ -37,7 +37,7 @@ class AsyncNetworkTask(val activity: ListActivityInterface): AsyncTask<String, I
             return
         }
 
-        activity.updateList(result)
+        fragment.updateList(result)
     }
 
 }

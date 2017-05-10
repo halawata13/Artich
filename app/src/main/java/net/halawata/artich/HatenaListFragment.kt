@@ -12,19 +12,24 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import net.halawata.artich.entity.HatenaArticle
+import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.MediaListAdapter
 import net.halawata.artich.model.list.HatenaList
 
-class HatenaListFragment : Fragment(), ListActivityInterface {
+class HatenaListFragment : Fragment(), ListFragmentInterface {
 
     override val list = HatenaList()
+
+    lateinit var selectedTitle: String
 
     lateinit var listView: ListView
 
     var adapter: MediaListAdapter<HatenaArticle>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        selectedTitle = resources.getString(R.string.new_entry)
+
         super.onCreate(savedInstanceState)
     }
 
@@ -36,19 +41,22 @@ class HatenaListFragment : Fragment(), ListActivityInterface {
         adapter = MediaListAdapter(context, data, R.layout.list_item)
         listView.adapter = adapter
 
-        val asyncNetWorkTask = AsyncNetworkTask(this)
-        asyncNetWorkTask.execute("https://api.rss2json.com/v1/api.json?rss_url=http://b.hatena.ne.jp/entrylist/it.rss")
+        request(ApiUrlString.Hatena.newEntry)
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val text = ((view as LinearLayout).getChildAt(1) as TextView).text as String
 
             Uri.parse(text).let {
-                val intent = Intent(Intent.ACTION_VIEW, it)
-                startActivity(intent)
+                startActivity(Intent(Intent.ACTION_VIEW, it))
             }
         }
 
         return view
+    }
+
+    override fun request(urlString: String) {
+        val asyncNetWorkTask = AsyncNetworkTask(this)
+        asyncNetWorkTask.execute(urlString)
     }
 
     override fun updateList(content: String) {
