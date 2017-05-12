@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import net.halawata.artich.R
-import net.halawata.artich.entity.Article
-import net.halawata.artich.entity.Menu
+import net.halawata.artich.entity.SideMenuItem
 import java.util.*
 
-class MenuListAdapter(val context: Context, var data: ArrayList<Menu>, val resource: Int): BaseAdapter() {
+class MenuListAdapter(val context: Context, var data: ArrayList<SideMenuItem>, val resource: Int): BaseAdapter() {
 
     override fun getCount(): Int {
         return data.size
@@ -27,7 +26,7 @@ class MenuListAdapter(val context: Context, var data: ArrayList<Menu>, val resou
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val activity = context as Activity
-        val item = getItem(position) as Menu
+        val item = getItem(position) as SideMenuItem
 
         val view = convertView ?: activity.layoutInflater.inflate(resource, null)
 

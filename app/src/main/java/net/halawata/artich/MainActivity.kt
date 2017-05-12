@@ -11,11 +11,12 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import net.halawata.artich.entity.Menu
+import net.halawata.artich.entity.SideMenuItem
 import net.halawata.artich.model.MenuListAdapter
 import net.halawata.artich.model.menu.GNewsMenu
 import net.halawata.artich.model.menu.HatenaMenu
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawerLayout: DrawerLayout
     lateinit var drawerListView: ListView
     lateinit var drawerToggle: ActionBarDrawerToggle
-    lateinit var drawerList: ArrayList<Menu>
+    lateinit var drawerList: ArrayList<SideMenuItem>
     lateinit var drawerListAdapter: MenuListAdapter
 
     lateinit var viewPager: ViewPager
@@ -64,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
         // Drawer setup
-        val title = resources.getString(R.string.hatena_list_name)
         val hatenaMenu = HatenaMenu(resources)
         drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         drawerListView = findViewById(R.id.drawer) as ListView
