@@ -1,13 +1,31 @@
 package net.halawata.artich.model.menu
 
 import android.content.res.Resources
+import android.database.sqlite.SQLiteOpenHelper
 import net.halawata.artich.R
 import net.halawata.artich.entity.SideMenuItem
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
 
-class QiitaMenu(val resources: Resources) {
+class QiitaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(helper, resources) {
 
-    fun getList(): ArrayList<SideMenuItem> {
+    override fun get(): ArrayList<String> {
+        return fetch(Media.QIITA)
+    }
+
+    override fun add(name: String) {
+        insert(Media.QIITA, name)
+    }
+
+    override fun remove(index: Int) {
+        delete(Media.QIITA, index + 1)
+    }
+
+    override fun save(data: ArrayList<String>) {
+        update(Media.QIITA, data)
+    }
+
+    override fun getMenuList(): ArrayList<SideMenuItem> {
         val menuItems: ArrayList<SideMenuItem> = arrayListOf()
 
         var id: Long = 0

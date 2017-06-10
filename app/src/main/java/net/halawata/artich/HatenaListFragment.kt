@@ -14,7 +14,7 @@ import android.widget.TextView
 import net.halawata.artich.entity.HatenaArticle
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
-import net.halawata.artich.model.MediaListAdapter
+import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.HatenaList
 
 class HatenaListFragment : Fragment(), ListFragmentInterface {
@@ -25,7 +25,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
     lateinit var listView: ListView
 
-    var adapter: MediaListAdapter<HatenaArticle>? = null
+    var adapter: ArticleListAdapter<HatenaArticle>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         selectedTitle = resources.getString(R.string.new_entry)
@@ -38,7 +38,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         listView = view.findViewById(R.id.list) as ListView
 
         val data = ArrayList<HatenaArticle>()
-        adapter = MediaListAdapter(context, data, R.layout.list_item)
+        adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
         listView.adapter = adapter
 
         request(ApiUrlString.Hatena.newEntry)
