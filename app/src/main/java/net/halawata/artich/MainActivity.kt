@@ -163,21 +163,38 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun selectPage(position: Int) {
+        val tabLayout = findViewById(R.id.tab_layout) as TabLayout
+
         when (position) {
             Page.HATENA.num -> {
                 val hatenaMenu = HatenaMenu(dbHelper, resources)
                 drawerList = hatenaMenu.getMenuList()
+
                 supportActionBar?.title = hatenaListFragment.selectedTitle
+                window.statusBarColor = resources.getColor(R.color.hatena)
+                supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.hatena, null))
+
+                tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.hatena))
             }
             Page.QIITA.num -> {
                 val qiitaMenu = QiitaMenu(dbHelper, resources)
                 drawerList = qiitaMenu.getMenuList()
+
                 supportActionBar?.title = qiitaListFragment.selectedTitle
+                window.statusBarColor = resources.getColor(R.color.qiita)
+                supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.qiita, null))
+
+                tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.qiita))
             }
             Page.GNEWS.num -> {
                 val gNewsMenu = GNewsMenu(dbHelper, resources)
                 drawerList = gNewsMenu.getMenuList()
+
                 supportActionBar?.title = gNewsListFragment.selectedTitle
+                window.statusBarColor = resources.getColor(R.color.gnews)
+                supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gnews, null))
+
+                tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.gnews))
             }
         }
 
