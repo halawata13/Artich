@@ -1,37 +1,80 @@
 package net.halawata.artich.model.list
 
-import android.util.Log
 import net.halawata.artich.entity.HatenaArticle
-import org.json.JSONException
-import org.json.JSONObject
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
+import java.io.StringReader
 import java.util.*
 
 class HatenaList: MediaList {
 
     override fun parse(content: String): ArrayList<HatenaArticle>? {
-        try {
-            val json = JSONObject(content)
-            val items = json.getJSONArray("items")
-            val articles = ArrayList<HatenaArticle>()
+        val factory = XmlPullParserFactory.newInstance()
+        val parser = factory.newPullParser()
+        parser.setInput(StringReader(content))
 
-            for (i in 0..(items.length() - 1)) {
-                val row = items.getJSONObject(i)
+        var eventType = parser.eventType
 
-                val article = HatenaArticle(
-                        id = i.toLong(),
-                        title = row.get("title") as? String ?: "",
-                        url = row.get("link") as? String ?: "",
-                        pubDate = row.get("pubDate") as? String ?: ""
-                )
+        val articles = ArrayList<HatenaArticle>()
+        var id: Long = 0
+        var title = ""
+        var url = ""
+        var pubDate = ""
 
-                articles.add(article)
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            // item タグ開始が来るまでスキップ
+            if (eventType != XmlPullParser.START_TAG || parser.name != "item") {
+                eventType = parser.next()
+                continue
             }
 
-            return articles
-        } catch (ex: JSONException) {
-            Log.e("JSONException", ex.message)
-            return null
+            while (eventType != XmlPullParser.END_TAG || parser.name != "item") {
+                if (eventType == XmlPullParser.START_TAG && parser.name == "title") {
+                    while (eventType != XmlPullParser.END_TAG || parser.name != "title") {
+                        if (eventType == XmlPullParser.TEXT) {
+                            title = parser.text
+                        }
+
+                        eventType = parser.next()
+                    }
+                }
+
+                if (eventType == XmlPullParser.START_TAG && parser.name == "link") {
+                    while (eventType != XmlPullParser.END_TAG || parser.name != "link") {
+                        if (eventType == XmlPullParser.TEXT) {
+                            url = parser.text
+                        }
+
+                        eventType = parser.next()
+                    }
+                }
+
+                if (eventType == XmlPullParser.START_TAG && parser.name == "dc:date") {
+                    while (eventType != XmlPullParser.END_TAG || parser.name != "dc:date") {
+                        if (eventType == XmlPullParser.TEXT) {
+                            pubDate = parser.text
+                        }
+
+                        eventType = parser.next()
+                    }
+                }
+
+                eventType = parser.next()
+            }
+
+            val article = HatenaArticle(
+                    id = id++,
+                    title = title,
+                    url = url,
+                    pubDate = pubDate
+            )
+
+            articles.add(article)
+
+            eventType = parser.next()
         }
+
+        return articles
     }
 
 }

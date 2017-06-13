@@ -4,13 +4,11 @@ class ApiUrlString {
 
     class Hatena {
         companion object {
-            private val convertApiUrl = "https://api.rss2json.com/v1/api.json?rss_url="
-
-            val newEntry = convertApiUrl + "http://b.hatena.ne.jp/entrylist/it.rss"
-            val hotEntry = convertApiUrl + "http://b.hatena.ne.jp/hotentry/it.rss"
+            val newEntry = "http://b.hatena.ne.jp/entrylist/it.rss"
+            val hotEntry = "http://b.hatena.ne.jp/hotentry/it.rss"
 
             fun get(keyword: String): String {
-                return convertApiUrl + "http://b.hatena.ne.jp/keyword/" + keyword + "?mode=rss&sort=count"
+                return "http://b.hatena.ne.jp/keyword/$keyword?mode=rss&sort=count"
             }
         }
     }
