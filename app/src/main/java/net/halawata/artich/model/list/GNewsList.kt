@@ -62,19 +62,28 @@ class GNewsList: MediaList {
                 eventType = parser.next()
             }
 
-            val article = GNewsArticle(
-                    id = id++,
-                    title = title,
-                    url = url,
-                    pubDate = pubDate
-            )
+            extractUrl(url)?.let {
+                val article = GNewsArticle(
+                        id = id++,
+                        title = title,
+                        url = it,
+                        pubDate = pubDate
+                )
 
-            articles.add(article)
+                articles.add(article)
+            }
 
             eventType = parser.next()
         }
 
         return articles
+    }
+
+    fun extractUrl(urlString: String): String? {
+        val regex = Regex("&url=(\\S+$)")
+        val result = regex.find(urlString)
+
+        return result?.groupValues?.get(1)
     }
 
 }
