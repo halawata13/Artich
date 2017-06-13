@@ -16,7 +16,7 @@ class ConfigActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_config)
 
-        title = "メニュー管理"
+        title = "メニュー編集"
 
         // list setup
         val listView = findViewById(R.id.config_list) as ListView

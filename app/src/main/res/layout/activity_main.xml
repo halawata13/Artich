@@ -18,8 +18,8 @@
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="#DDDDDD"
+                android:layout_alignParentTop="true"
+                android:background="#e8e8e8"
                 app:tabIndicatorColor="#999999"
                 app:tabSelectedTextColor="#333333"
                 app:tabTextColor="#000000" />
@@ -28,7 +28,7 @@
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/tab_layout" />
+                android:layout_below="@id/tab_layout" />
 
     </RelativeLayout>
 
@@ -38,8 +38,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="#111" />
+            android:divider="#eeeeee"
+            android:dividerHeight="1dp"
+            android:background="#ffffff" />
 
 </android.support.v4.widget.DrawerLayout>
