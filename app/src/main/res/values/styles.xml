@@ -8,8 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <color name="hatena">#00a4e1</color>
-    <color name="qiita">#74b942</color>
-    <color name="gnews">#ef402d</color>
+    <color name="hatena">#3E7998</color>
+    <color name="qiita">#5D983F</color>
+    <color name="gnews">#C85A52</color>
 
 </resources>
