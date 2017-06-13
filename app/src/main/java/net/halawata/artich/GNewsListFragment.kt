@@ -7,10 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import net.halawata.artich.entity.GNewsArticle
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
@@ -24,6 +21,8 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
     lateinit var selectedTitle: String
 
     lateinit var listView: ListView
+    var loadingView: RelativeLayout? = null
+    var loadingText: TextView? = null
 
     var adapter: ArticleListAdapter<GNewsArticle>? = null
 
@@ -36,6 +35,8 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_list, container, false)
         listView = view.findViewById(R.id.list) as ListView
+        loadingView = view.findViewById(R.id.loading_view) as RelativeLayout
+        loadingText = view.findViewById(R.id.loading_text) as TextView
 
         val data = ArrayList<GNewsArticle>()
         adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
@@ -57,14 +58,22 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
     override fun request(urlString: String) {
         val asyncNetWorkTask = AsyncNetworkTask(this)
         asyncNetWorkTask.execute(urlString)
+
+        loadingView?.alpha = 1F
+        loadingText?.text = resources.getString(R.string.loading)
     }
 
-    override fun updateList(content: String) {
+    override fun success(content: String) {
         list.parse(content)?.let {
             adapter?.data = it
 
             listView.adapter = adapter
+            loadingView?.alpha = 0F
         }
+    }
+
+    override fun fail() {
+        loadingText?.text = resources.getString(R.string.loading_fail)
     }
 
 }

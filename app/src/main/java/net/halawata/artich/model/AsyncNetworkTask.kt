@@ -27,6 +27,7 @@ class AsyncNetworkTask(val fragment: ListFragmentInterface): AsyncTask<String, I
             }
         } catch (ex: IOException) {
             ex.printStackTrace()
+            fragment.fail()
         }
 
         return content
@@ -34,10 +35,11 @@ class AsyncNetworkTask(val fragment: ListFragmentInterface): AsyncTask<String, I
 
     override fun onPostExecute(result: String?) {
         if (result == null) {
+            fragment.fail()
             return
         }
 
-        fragment.updateList(result)
+        fragment.success(result)
     }
 
 }

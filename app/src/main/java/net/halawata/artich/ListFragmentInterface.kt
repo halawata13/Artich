@@ -8,6 +8,8 @@ interface ListFragmentInterface {
 
     fun request(urlString: String)
 
-    fun updateList(content: String)
+    fun success(content: String)
+
+    fun fail()
 
 }
