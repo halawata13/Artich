@@ -13,6 +13,7 @@
     <string name="hot_entry">人気エントリー</string>
 
     <string name="menu_management_activity_title">メニュー編集</string>
+    <string name="mute_management_activity_title">ミュート</string>
 
     <string name="loading">loading…</string>
     <string name="loading_fail">記事の読み込みに失敗しました</string>

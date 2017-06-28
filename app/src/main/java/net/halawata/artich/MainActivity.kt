@@ -1,5 +1,6 @@
 package net.halawata.artich
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.database.sqlite.SQLiteOpenHelper
@@ -21,6 +22,7 @@ import android.widget.ListView
 import net.halawata.artich.entity.SideMenuItem
 import net.halawata.artich.model.DatabaseHelper
 import net.halawata.artich.model.MenuListAdapter
+import net.halawata.artich.model.config.ConfigList
 import net.halawata.artich.model.menu.GNewsMenu
 import net.halawata.artich.model.menu.HatenaMenu
 import net.halawata.artich.model.menu.QiitaMenu
@@ -107,8 +109,21 @@ class MainActivity : AppCompatActivity() {
         drawerListAdapter.notifyDataSetChanged()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        data?.let {
+            if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("reload", false)) {
+                hatenaListFragment.reload()
+                qiitaListFragment.reload()
+                gNewsListFragment.reload()
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menu?.add(Menu.NONE, Menu.FIRST + 1, Menu.NONE, "メニュー管理")
+        menu?.add(Menu.NONE, Menu.FIRST + 2, Menu.NONE, "ミュート")
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -116,7 +131,16 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == Menu.FIRST + 1) {
             val configIntent = Intent(this, ConfigActivity::class.java)
-            startActivity(configIntent)
+            configIntent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MENU.num)
+            startActivityForResult(configIntent, 0)
+
+            return true
+        }
+
+        if (item?.itemId == Menu.FIRST + 2) {
+            val configIntent = Intent(this, ConfigActivity::class.java)
+            configIntent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MUTE.num)
+            startActivityForResult(configIntent, 0)
 
             return true
         }

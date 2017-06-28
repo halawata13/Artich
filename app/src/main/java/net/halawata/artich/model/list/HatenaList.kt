@@ -1,12 +1,17 @@
 package net.halawata.artich.model.list
 
+import android.content.Context
 import net.halawata.artich.entity.HatenaArticle
+import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.mute.HatenaMute
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.StringReader
-import java.util.*
+import java.net.MalformedURLException
+import java.net.URL
+import kotlin.collections.ArrayList
 
-class HatenaList: MediaList {
+class HatenaList(): MediaList {
 
     override fun parse(content: String): ArrayList<HatenaArticle>? {
         val factory = XmlPullParserFactory.newInstance()
@@ -77,4 +82,25 @@ class HatenaList: MediaList {
         return articles
     }
 
+    fun filter(data: ArrayList<HatenaArticle>, context: Context): ArrayList<HatenaArticle> {
+        val filtered = ArrayList<HatenaArticle>()
+        val helper = DatabaseHelper(context)
+        val mute = HatenaMute(helper)
+        val muteList = mute.getMuteList()
+
+        data.forEach { item ->
+            try {
+                val url = URL(item.url)
+
+                if (!muteList.contains(url.host)) {
+                    filtered.add(item)
+                }
+
+            } catch (ex: MalformedURLException) {
+                ex.printStackTrace()
+            }
+        }
+
+        return filtered
+    }
 }

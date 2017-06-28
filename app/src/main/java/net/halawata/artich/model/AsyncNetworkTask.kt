@@ -41,5 +41,4 @@ class AsyncNetworkTask(val fragment: ListFragmentInterface): AsyncTask<String, I
 
         fragment.success(result)
     }
-
 }

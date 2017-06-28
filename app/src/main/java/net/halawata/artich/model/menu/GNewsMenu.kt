@@ -47,5 +47,4 @@ class GNewsMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(help
 
         return menuItems
     }
-
 }

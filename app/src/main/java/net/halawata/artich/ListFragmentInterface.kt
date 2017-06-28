@@ -12,4 +12,7 @@ interface ListFragmentInterface {
 
     fun fail()
 
+    fun applyFilter()
+
+    fun reload()
 }

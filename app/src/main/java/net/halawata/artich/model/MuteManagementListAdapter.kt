@@ -4,23 +4,32 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.TextView
-import com.nhaarman.listviewanimations.ArrayAdapter
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter
 import net.halawata.artich.R
+import net.halawata.artich.entity.ListItem
 import kotlin.collections.ArrayList
 
-class MenuManagementListAdapter(val context: Context, var data: ArrayList<String>) : ArrayAdapter<String>(data), UndoAdapter {
+class MuteManagementListAdapter(val context: Context, var data: ArrayList<ListItem>) : BaseAdapter(), UndoAdapter {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View? = convertView
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.drag_drop_list_item, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.deletable_list_item, parent, false)
         }
 
-        (view!!.findViewById(R.id.drag_drop_list_title) as TextView).text = getItem(position)
+        (view!!.findViewById(R.id.deletable_list_title) as TextView).text = getItem(position).title
 
         return view
+    }
+
+    override fun getCount(): Int {
+        return data.size
+    }
+
+    override fun getItem(position: Int): ListItem {
+        return data[position]
     }
 
     override fun getItemId(position: Int): Long {

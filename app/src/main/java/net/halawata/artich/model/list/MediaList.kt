@@ -1,9 +1,8 @@
 package net.halawata.artich.model.list
 
-import java.util.*
+import kotlin.collections.ArrayList
 
 interface MediaList {
 
     fun parse(content: String): ArrayList<*>?
-
 }

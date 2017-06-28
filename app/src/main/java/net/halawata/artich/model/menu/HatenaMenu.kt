@@ -31,7 +31,6 @@ class HatenaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(hel
         var id: Long = 0
 
         val menuList = fetch(Media.COMMON) + fetch(Media.HATENA)
-        //val hatena = fetch(Media.HATENA)
 
         menuItems.add(SideMenuItem(
                 id = id++,
@@ -55,5 +54,4 @@ class HatenaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(hel
 
         return menuItems
     }
-
 }

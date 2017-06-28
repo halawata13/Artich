@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import net.halawata.artich.entity.HatenaArticle
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
@@ -20,12 +21,12 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
     lateinit var selectedTitle: String
 
-    lateinit var listView: ListView
-
+    var listView: ListView? = null
     var loadingView: RelativeLayout? = null
     var loadingText: TextView? = null
 
     var adapter: ArticleListAdapter<HatenaArticle>? = null
+    var currentUrlString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         selectedTitle = resources.getString(R.string.new_entry)
@@ -41,11 +42,11 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
         val data = ArrayList<HatenaArticle>()
         adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
-        listView.adapter = adapter
+        listView?.adapter = adapter
 
         request(ApiUrlString.Hatena.newEntry)
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val text = ((view as LinearLayout).getChildAt(1) as TextView).text as String
 
             Uri.parse(text).let {
@@ -53,7 +54,28 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
             }
         }
 
+        listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+            val article = adapter?.data?.get(position)
+            val title = article?.url
+
+            title?.let {
+                val dialog = ArticleDialogFragment()
+                dialog.mediaType = Media.HATENA
+                dialog.title = title
+                dialog.article = article
+
+                dialog.setTargetFragment(this, 0)
+                dialog.show(fragmentManager, "articleDialog")
+            }
+
+            true
+        }
+
         return view
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        applyFilter()
     }
 
     override fun request(urlString: String) {
@@ -62,19 +84,34 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
         loadingView?.alpha = 1F
         loadingText?.text = resources.getString(R.string.loading)
+        currentUrlString = urlString
     }
 
     override fun success(content: String) {
         list.parse(content)?.let {
-            adapter?.data = it
 
-            listView.adapter = adapter
+            adapter?.data = list.filter(it, activity)
+
+            listView?.adapter = adapter
             loadingView?.alpha = 0F
         }
     }
 
     override fun fail() {
         loadingText?.text = resources.getString(R.string.loading_fail)
+        currentUrlString = null
     }
 
+    override fun applyFilter() {
+        adapter?.let {
+            adapter?.data = list.filter(it.data, activity)
+            adapter?.notifyDataSetChanged()
+        }
+    }
+
+    override fun reload() {
+        currentUrlString?.let {
+            request(it)
+        }
+    }
 }

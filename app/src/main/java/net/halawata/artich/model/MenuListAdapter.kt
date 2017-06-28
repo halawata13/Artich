@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import net.halawata.artich.R
 import net.halawata.artich.entity.SideMenuItem
-import java.util.*
+import kotlin.collections.ArrayList
 
 class MenuListAdapter(val context: Context, var data: ArrayList<SideMenuItem>, val resource: Int): BaseAdapter() {
 
@@ -34,5 +34,4 @@ class MenuListAdapter(val context: Context, var data: ArrayList<SideMenuItem>, v
 
         return view
     }
-
 }

@@ -1,4 +1,4 @@
-package net.halawata.artich
+package net.halawata.artich.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import butterknife.ButterKnife
 import butterknife.InjectView
+import net.halawata.artich.R
 
 class DragDropCell : LinearLayout {
 

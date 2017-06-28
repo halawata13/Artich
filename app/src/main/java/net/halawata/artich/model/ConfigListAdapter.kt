@@ -8,8 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import net.halawata.artich.R
 import net.halawata.artich.entity.ConfigListItem
-import net.halawata.artich.entity.SideMenuItem
-import java.util.*
+import kotlin.collections.ArrayList
 
 class ConfigListAdapter(val context: Context, var data: ArrayList<ConfigListItem>, val resource: Int): BaseAdapter() {
 
@@ -35,5 +34,4 @@ class ConfigListAdapter(val context: Context, var data: ArrayList<ConfigListItem
 
         return view
     }
-
 }

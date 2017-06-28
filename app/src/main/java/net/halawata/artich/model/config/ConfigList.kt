@@ -5,18 +5,21 @@ import net.halawata.artich.R
 import net.halawata.artich.entity.ConfigListItem
 import net.halawata.artich.enum.Media
 
-class ConfigList(val resources: Resources) {
+class ConfigList(val resources: Resources, val type: Type) {
 
     fun getMenuList(): ArrayList<ConfigListItem> {
         val menuItems: ArrayList<ConfigListItem> = arrayListOf()
 
         var id: Long = 0
 
-        menuItems.add(ConfigListItem(
-                id = id++,
-                mediaId = Media.COMMON,
-                title = resources.getString(R.string.common_list_name)
-        ))
+        // 共通があるのはメニュー編集のみ
+        if (type == Type.MENU) {
+            menuItems.add(ConfigListItem(
+                    id = id++,
+                    mediaId = Media.COMMON,
+                    title = resources.getString(R.string.common_list_name)
+            ))
+        }
 
         menuItems.add(ConfigListItem(
                 id = id++,
@@ -49,4 +52,8 @@ class ConfigList(val resources: Resources) {
         }
     }
 
+    enum class Type(val num: Int) {
+        MENU(0),
+        MUTE(1),
+    }
 }

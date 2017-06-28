@@ -32,73 +32,75 @@ class MenuManagementActivity : AppCompatActivity() {
         setContentView(R.layout.activity_menu_management)
 
         val mediaString = intent.getStringExtra(MenuManagementActivity.mediaTypeKey)
-        val configList = ConfigList(resources)
-        val mediaType = configList.getMediaId(mediaString) ?: return
+        val configList = ConfigList(resources, ConfigList.Type.MENU)
+        val mediaType = configList.getMediaId(mediaString)
 
         title = resources.getString(R.string.menu_management_activity_title) + "（" + mediaString + "）"
 
         val helper = DatabaseHelper(this)
 
-        mediaMenu = MediaMenuFactory.create(mediaType, helper, resources)
-        try {
-            mediaList = mediaMenu.get()
-
-        } catch (ex: Exception) {
-            showError("データの読み込みに失敗しました")
-            return
-        }
-
-        val listAdapter = MenuManagementListAdapter(this, mediaList)
-        listView = findViewById(R.id.menu_management_list) as DynamicListView
-
-        listView.enableDragAndDrop()
-        listView.setDraggableManager(TouchViewDraggableManager(R.id.drag_drop_list_grip))
-
-        val simpleSwipeUndoAdapter = SimpleSwipeUndoAdapter(listAdapter, this, OnDismissCallback { listView, reverseSortedPositions ->
-        })
-
-        adapter = AlphaInAnimationAdapter(simpleSwipeUndoAdapter)
-        adapter.setAbsListView(listView)
-        adapter.viewAnimator?.setInitialDelayMillis(300)
-        listView.adapter = adapter
-
-        listView.setOnItemMovedListener { originalPosition, newPosition ->
+        mediaType?.let {
+            mediaMenu = MediaMenuFactory.create(mediaType, helper, resources)
             try {
-                mediaMenu.save(mediaList)
+                mediaList = mediaMenu.get()
 
             } catch (ex: Exception) {
-                showError("データの保存に失敗しました")
+                showError("データの読み込みに失敗しました")
+                return
             }
-        }
 
-        listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
-            if (listView != null) {
-                listView.startDragging(position)
-                true
-            }
-            false
-        }
+            val listAdapter = MenuManagementListAdapter(this, mediaList)
+            listView = findViewById(R.id.menu_management_list) as DynamicListView
 
-        listView.enableSwipeToDismiss { listView, reverseSortedPositions ->
-            for (position in reverseSortedPositions) {
+            listView.enableDragAndDrop()
+            listView.setDraggableManager(TouchViewDraggableManager(R.id.drag_drop_list_grip))
+
+            val simpleSwipeUndoAdapter = SimpleSwipeUndoAdapter(listAdapter, this, OnDismissCallback { listView, reverseSortedPositions ->
+            })
+
+            adapter = AlphaInAnimationAdapter(simpleSwipeUndoAdapter)
+            adapter.setAbsListView(listView)
+            adapter.viewAnimator?.setInitialDelayMillis(300)
+            listView.adapter = adapter
+
+            listView.setOnItemMovedListener { originalPosition, newPosition ->
                 try {
-                    mediaMenu.remove(position)
-
-                    mediaList.removeAt(position)
-                    adapter.notifyDataSetChanged()
-                    this.listView.invalidateViews()
+                    mediaMenu.save(mediaList)
 
                 } catch (ex: Exception) {
-                    showError("項目の削除に失敗しました")
+                    showError("データの保存に失敗しました")
                 }
             }
-        }
 
-        val addBtn = findViewById(R.id.menu_management_add_btn) as FloatingActionButton
-        addBtn.setOnClickListener {
-            val dialog = MenuAdditionFragment()
-            dialog.mediaType = mediaType
-            dialog.show(fragmentManager, "menuAddition")
+            listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
+                if (listView != null) {
+                    listView.startDragging(position)
+                    true
+                }
+                false
+            }
+
+            listView.enableSwipeToDismiss { listView, reverseSortedPositions ->
+                for (position in reverseSortedPositions) {
+                    try {
+                        mediaMenu.remove(position)
+
+                        mediaList.removeAt(position)
+                        adapter.notifyDataSetChanged()
+                        this.listView.invalidateViews()
+
+                    } catch (ex: Exception) {
+                        showError("項目の削除に失敗しました")
+                    }
+                }
+            }
+
+            val addBtn = findViewById(R.id.menu_management_add_btn) as FloatingActionButton
+            addBtn.setOnClickListener {
+                val dialog = MenuAdditionFragment()
+                dialog.mediaType = mediaType
+                dialog.show(fragmentManager, "menuAddition")
+            }
         }
     }
 

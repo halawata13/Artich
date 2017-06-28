@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import net.halawata.artich.R
 import net.halawata.artich.entity.Article
-import java.util.*
+import kotlin.collections.ArrayList
 
 class ArticleListAdapter<T: Article>(val context: Context, var data: ArrayList<T>, val resource: Int): BaseAdapter() {
 
@@ -35,5 +35,4 @@ class ArticleListAdapter<T: Article>(val context: Context, var data: ArrayList<T
 
         return view
     }
-
 }

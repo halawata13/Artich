@@ -1,12 +1,17 @@
 package net.halawata.artich.model.list
 
+import android.content.Context
 import net.halawata.artich.entity.GNewsArticle
+import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.mute.GNewsMute
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.StringReader
-import java.util.*
+import java.net.MalformedURLException
+import java.net.URL
+import kotlin.collections.ArrayList
 
-class GNewsList: MediaList {
+class GNewsList(): MediaList {
 
     override fun parse(content: String): ArrayList<GNewsArticle>? {
         val factory = XmlPullParserFactory.newInstance()
@@ -79,11 +84,32 @@ class GNewsList: MediaList {
         return articles
     }
 
+    fun filter(data: ArrayList<GNewsArticle>, context: Context): ArrayList<GNewsArticle> {
+        val filtered = ArrayList<GNewsArticle>()
+        val helper = DatabaseHelper(context)
+        val mute = GNewsMute(helper)
+        val muteList = mute.getMuteList()
+
+        data.forEach { item ->
+            try {
+                val url = URL(item.url)
+
+                if (!muteList.contains(url.host)) {
+                    filtered.add(item)
+                }
+
+            } catch (ex: MalformedURLException) {
+                ex.printStackTrace()
+            }
+        }
+
+        return filtered
+    }
+
     fun extractUrl(urlString: String): String? {
         val regex = Regex("&url=(\\S+$)")
         val result = regex.find(urlString)
 
         return result?.groupValues?.get(1)
     }
-
 }

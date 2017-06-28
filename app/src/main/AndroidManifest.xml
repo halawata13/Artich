@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".MenuManagementActivity">
         </activity>
+        <activity android:name=".MuteManagementActivity">
+        </activity>
     </application>
 
 </manifest>

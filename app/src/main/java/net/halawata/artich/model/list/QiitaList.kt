@@ -1,12 +1,15 @@
 package net.halawata.artich.model.list
 
+import android.content.Context
 import android.util.Log
 import net.halawata.artich.entity.QiitaArticle
+import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.mute.QiitaMute
 import org.json.JSONArray
 import org.json.JSONException
-import java.util.*
+import kotlin.collections.ArrayList
 
-class QiitaList: MediaList {
+class QiitaList(): MediaList {
 
     override fun parse(content: String): ArrayList<QiitaArticle>? {
         try {
@@ -20,7 +23,8 @@ class QiitaList: MediaList {
                         id = i.toLong(),
                         title = row.get("title") as? String ?: "",
                         url = row.get("url") as? String ?: "",
-                        pubDate = row.get("updated_at") as? String ?: ""
+                        pubDate = row.get("updated_at") as? String ?: "",
+                        user = row.getJSONObject("user").get("id") as? String ?: ""
                 )
 
                 articles.add(article)
@@ -33,4 +37,18 @@ class QiitaList: MediaList {
         }
     }
 
+    fun filter(data: ArrayList<QiitaArticle>, context: Context): ArrayList<QiitaArticle> {
+        val filtered = ArrayList<QiitaArticle>()
+        val helper = DatabaseHelper(context)
+        val mute = QiitaMute(helper)
+        val muteList = mute.getMuteList()
+
+        data.forEach { item ->
+            if (!muteList.contains(item.user)) {
+                filtered.add(item)
+            }
+        }
+
+        return filtered
+    }
 }

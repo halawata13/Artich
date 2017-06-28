@@ -19,6 +19,10 @@ class DatabaseHelper(val context: Context): SQLiteOpenHelper(context, "hoge", nu
         p0?.execSQL("CREATE TABLE t_menu_hatena (id INTEGER PRIMARY KEY, name TEXT)")
         p0?.execSQL("CREATE TABLE t_menu_qiita (id INTEGER PRIMARY KEY, name TEXT)")
         p0?.execSQL("CREATE TABLE t_menu_gnews (id INTEGER PRIMARY KEY, name TEXT)")
+
+        p0?.execSQL("CREATE TABLE t_mute_hatena (id INTEGER PRIMARY KEY, name TEXT)")
+        p0?.execSQL("CREATE TABLE t_mute_qiita (id INTEGER PRIMARY KEY, name TEXT)")
+        p0?.execSQL("CREATE TABLE t_mute_gnews (id INTEGER PRIMARY KEY, name TEXT)")
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
@@ -26,6 +30,11 @@ class DatabaseHelper(val context: Context): SQLiteOpenHelper(context, "hoge", nu
         p0?.execSQL("DROP TABLE IF EXISTS t_menu_hatena")
         p0?.execSQL("DROP TABLE IF EXISTS t_menu_qiita")
         p0?.execSQL("DROP TABLE IF EXISTS t_menu_gnews")
+
+        p0?.execSQL("DROP TABLE IF EXISTS t_mute_hatena")
+        p0?.execSQL("DROP TABLE IF EXISTS t_mute_qiita")
+        p0?.execSQL("DROP TABLE IF EXISTS t_mute_gnews")
+
         onCreate(p0)
     }
 }
