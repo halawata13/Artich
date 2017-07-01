@@ -8,8 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <color name="hatena">#3E7998</color>
-    <color name="qiita">#5D983F</color>
-    <color name="gnews">#C85A52</color>
+    <style name="ConfigTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/common</item>
+    </style>
 
 </resources>
