@@ -15,7 +15,7 @@ import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.HatenaList
 
-class HatenaListFragment : Fragment(), ListFragmentInterface {
+class HatenaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDelegate {
 
     override val list = HatenaList()
 
@@ -97,7 +97,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         }
     }
 
-    override fun fail() {
+    override fun fail(ex: Exception?) {
         loadingText?.text = resources.getString(R.string.loading_fail)
         currentUrlString = null
     }

@@ -8,10 +8,6 @@ interface ListFragmentInterface {
 
     fun request(urlString: String)
 
-    fun success(content: String)
-
-    fun fail()
-
     fun applyFilter()
 
     fun reload()

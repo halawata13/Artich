@@ -15,7 +15,7 @@ import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.QiitaList
 
-class QiitaListFragment : Fragment(), ListFragmentInterface {
+class QiitaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDelegate {
 
     override val list = QiitaList()
 
@@ -95,7 +95,7 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
         }
     }
 
-    override fun fail() {
+    override fun fail(ex: Exception?) {
         loadingText?.text = resources.getString(R.string.loading_fail)
     }
 

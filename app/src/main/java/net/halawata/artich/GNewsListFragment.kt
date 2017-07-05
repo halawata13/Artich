@@ -15,7 +15,7 @@ import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.GNewsList
 
-class GNewsListFragment : Fragment(), ListFragmentInterface {
+class GNewsListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDelegate {
 
     override val list = GNewsList()
 
@@ -95,7 +95,7 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         }
     }
 
-    override fun fail() {
+    override fun fail(ex: Exception?) {
         loadingText?.text = resources.getString(R.string.loading_fail)
     }
 
