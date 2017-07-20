@@ -1,25 +1,34 @@
 package net.halawata.artich.model
 
+import android.net.Uri
 import android.os.AsyncTask
-import net.halawata.artich.AsyncNetworkTaskDelegate
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.lang.ref.WeakReference
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
-class AsyncNetworkTask(delegate: AsyncNetworkTaskDelegate): AsyncTask<String, Int, String>() {
+class AsyncNetworkTask : AsyncTask<String, Int, String>() {
 
-    val delegate = WeakReference<AsyncNetworkTaskDelegate>(delegate)
+    var method = Method.GET
+    var responseCode: Int? = null
+    var onResponse: ((responseCode: Int?, content: String?) -> Unit)? = null
 
-    override fun doInBackground(vararg params: String?): String {
-        var content = ""
+    override fun doInBackground(vararg params: String?): String? {
+        var content: String? = ""
+        var connection: HttpURLConnection? = null
 
         try {
-            val url = URL(params[0])
-            val connection = url.openConnection() as HttpURLConnection
-            connection.requestMethod = "GET"
+            val url = URL(params.first())
+            connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = method.toString()
+            connection.useCaches = false
+
+            if (method == Method.POST) {
+                val printWriter = PrintWriter(connection.outputStream)
+                printWriter.print(params[1])
+                printWriter.close()
+            }
+
+            responseCode = connection.responseCode
 
             val reader = BufferedReader(InputStreamReader(connection.inputStream, "UTF-8"))
 
@@ -28,20 +37,59 @@ class AsyncNetworkTask(delegate: AsyncNetworkTaskDelegate): AsyncTask<String, In
                 content += line
                 line = reader.readLine()
             }
+
+            reader.close()
+
+        } catch (ex: FileNotFoundException) {
+            val reader = BufferedReader(InputStreamReader(connection?.errorStream, "UTF-8"))
+
+            var line = reader.readLine()
+            while (line != null) {
+                content += line
+                line = reader.readLine()
+            }
+
+            reader.close()
+
         } catch (ex: IOException) {
             ex.printStackTrace()
-            delegate.get()?.fail(ex)
+
+            content = null
+
+        } finally {
+            connection?.disconnect()
         }
 
         return content
     }
 
     override fun onPostExecute(result: String?) {
-        if (result == null) {
-            delegate.get()?.fail()
-            return
-        }
+        onResponse?.invoke(responseCode, result)
+    }
 
-        delegate.get()?.success(result)
+    fun request(urlString: String, method: Method, params: Map<String, String>? = null) {
+        this.method = method
+
+        val builder = Uri.Builder()
+
+        params?.forEach { (k, v) ->
+            builder.appendQueryParameter(k, v)
+        }
+        var paramsString = builder.build().toString()
+
+        when (method) {
+            Method.GET -> {
+                execute(urlString + paramsString)
+            }
+            Method.POST -> {
+                paramsString = paramsString.drop(1)
+                execute(urlString, paramsString)
+            }
+        }
+    }
+
+    enum class Method {
+        GET,
+        POST,
     }
 }

@@ -14,8 +14,9 @@ import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.HatenaList
+import java.net.HttpURLConnection
 
-class HatenaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDelegate {
+class HatenaListFragment : Fragment(), ListFragmentInterface {
 
     override val list = HatenaList()
 
@@ -79,27 +80,24 @@ class HatenaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDe
     }
 
     override fun request(urlString: String) {
-        val asyncNetWorkTask = AsyncNetworkTask(this)
-        asyncNetWorkTask.execute(urlString)
+        val asyncNetWorkTask = AsyncNetworkTask()
+        asyncNetWorkTask.request(urlString, AsyncNetworkTask.Method.GET)
 
         loadingView?.alpha = 1F
         loadingText?.text = resources.getString(R.string.loading)
-        currentUrlString = urlString
-    }
 
-    override fun success(content: String) {
-        list.parse(content)?.let {
+        asyncNetWorkTask.onResponse = { responseCode, content ->
+            if (responseCode == HttpURLConnection.HTTP_OK && content != null) {
+                list.parse(content)?.let {
+                    adapter?.data = list.filter(it, activity)
 
-            adapter?.data = list.filter(it, activity)
-
-            listView?.adapter = adapter
-            loadingView?.alpha = 0F
+                    listView?.adapter = adapter
+                    loadingView?.alpha = 0F
+                }
+            } else {
+                loadingText?.text = resources.getString(R.string.loading_fail)
+            }
         }
-    }
-
-    override fun fail(ex: Exception?) {
-        loadingText?.text = resources.getString(R.string.loading_fail)
-        currentUrlString = null
     }
 
     override fun applyFilter() {

@@ -14,8 +14,9 @@ import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.QiitaList
+import java.net.HttpURLConnection
 
-class QiitaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDelegate {
+class QiitaListFragment : Fragment(), ListFragmentInterface {
 
     override val list = QiitaList()
 
@@ -79,24 +80,24 @@ class QiitaListFragment : Fragment(), ListFragmentInterface, AsyncNetworkTaskDel
     }
 
     override fun request(urlString: String) {
-        val asyncNetWorkTask = AsyncNetworkTask(this)
-        asyncNetWorkTask.execute(urlString)
+        val asyncNetWorkTask = AsyncNetworkTask()
+        asyncNetWorkTask.request(urlString, AsyncNetworkTask.Method.GET)
 
         loadingView?.alpha = 1F
         loadingText?.text = resources.getString(R.string.loading)
-    }
 
-    override fun success(content: String) {
-        list.parse(content)?.let {
-            adapter?.data = list.filter(it, activity)
+        asyncNetWorkTask.onResponse = { responseCode, content ->
+            if (responseCode == HttpURLConnection.HTTP_OK && content != null) {
+                list.parse(content)?.let {
+                    adapter?.data = list.filter(it, activity)
 
-            listView?.adapter = adapter
-            loadingView?.alpha = 0F
+                    listView?.adapter = adapter
+                    loadingView?.alpha = 0F
+                }
+            } else {
+                loadingText?.text = resources.getString(R.string.loading_fail)
+            }
         }
-    }
-
-    override fun fail(ex: Exception?) {
-        loadingText?.text = resources.getString(R.string.loading_fail)
     }
 
     override fun applyFilter() {
