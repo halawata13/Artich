@@ -2,7 +2,6 @@ package net.halawata.artich
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager
@@ -14,6 +13,8 @@ import net.halawata.artich.model.config.ConfigList
 import net.halawata.artich.model.menu.MediaMenuFactory
 import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.Toast
+import com.getbase.floatingactionbutton.FloatingActionButton
+import com.getbase.floatingactionbutton.FloatingActionsMenu
 import net.halawata.artich.model.menu.MediaMenuInterface
 
 class MenuManagementActivity : AppCompatActivity() {
@@ -95,11 +96,14 @@ class MenuManagementActivity : AppCompatActivity() {
                 }
             }
 
-            val addBtn = findViewById(R.id.menu_management_add_btn) as FloatingActionButton
+            val addMenu = findViewById(R.id.menu_management_add_menu) as FloatingActionsMenu
+            val addBtn = findViewById(R.id.menu_management_add_text_btn) as FloatingActionButton
             addBtn.setOnClickListener {
                 val dialog = MenuAdditionFragment()
                 dialog.mediaType = mediaType
                 dialog.show(fragmentManager, "menuAddition")
+
+                addMenu.collapse()
             }
         }
     }

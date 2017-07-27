@@ -17,14 +17,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ConfigActivity"
-                  android:theme="@style/ConfigTheme">
+        <activity
+                android:name=".ConfigActivity"
+                android:theme="@style/ConfigTheme">
         </activity>
-        <activity android:name=".MenuManagementActivity"
-                  android:theme="@style/ConfigTheme">
+        <activity
+                android:name=".MenuManagementActivity"
+                android:theme="@style/ConfigTheme">
         </activity>
-        <activity android:name=".MuteManagementActivity"
-                  android:theme="@style/ConfigTheme">
+        <activity
+                android:name=".MuteManagementActivity"
+                android:theme="@style/ConfigTheme">
+        </activity>
+        <activity android:name=".QiitaTagSelectionActivity">
         </activity>
     </application>
 

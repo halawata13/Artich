@@ -18,18 +18,28 @@
             android:divider="@null"
             android:paddingBottom="48dp" />
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/menu_management_add_btn"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/menu_management_add_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:backgroundTint="@color/common"
-            app:borderWidth="0dp"
-            android:src="@drawable/ic_add"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_marginStart="16dp"
+            app:fab_addButtonColorNormal="@color/common"
+            app:fab_addButtonColorPressed="@color/common_active"
+            app:fab_addButtonPlusIconColor="@color/white"
+            app:fab_labelStyle="@style/menu_labels_style"
+            app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/menu_management_add_text_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_icon="@drawable/ic_mode_edit_white_24dp"
+                app:fab_colorNormal="@color/common"
+                app:fab_title="テキストを入力する"
+                app:fab_colorPressed="@color/common_active"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

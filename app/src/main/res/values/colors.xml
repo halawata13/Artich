@@ -8,4 +8,11 @@
     <color name="hatena">#3e7998</color>
     <color name="qiita">#5D983F</color>
     <color name="gnews">#C85A52</color>
+
+    <color name="common_active">#898989</color>
+
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+
 </resources>

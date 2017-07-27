@@ -12,4 +12,14 @@
         <item name="colorPrimary">@color/common</item>
     </style>
 
+    <style name="menu_labels_style">
+        <item name="android:background">@color/half_black</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:radius">8dp</item>
+    </style>
+
 </resources>
