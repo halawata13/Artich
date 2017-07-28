@@ -37,6 +37,7 @@ class MenuAdditionFragment : DialogFragment() {
                             mediaMenu.add(text)
 
                         } catch (ex: Exception) {
+                            ex.printStackTrace()
                             activity.showError("データの読み込みに失敗しました")
                         }
 

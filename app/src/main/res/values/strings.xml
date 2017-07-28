@@ -18,6 +18,10 @@
     <string name="loading">loading…</string>
     <string name="loading_fail">記事の読み込みに失敗しました</string>
 
+    <string name="loading_tag">loading…</string>
+    <string name="loading_fail_tag">タグの読み込みに失敗しました</string>
+    <string name="menu_addition_tag">Qiitaのタグから選ぶ</string>
+
     <string-array name="menu_list">
         <item>Kotlin</item>
         <item>Swift</item>

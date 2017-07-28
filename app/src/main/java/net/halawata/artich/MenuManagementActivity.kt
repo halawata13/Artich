@@ -1,5 +1,7 @@
 package net.halawata.artich
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
@@ -97,16 +99,48 @@ class MenuManagementActivity : AppCompatActivity() {
             }
 
             val addMenu = findViewById(R.id.menu_management_add_menu) as FloatingActionsMenu
-            val addBtn = findViewById(R.id.menu_management_add_text_btn) as FloatingActionButton
-            addBtn.setOnClickListener {
+            val addTextBtn = findViewById(R.id.menu_management_add_text_btn) as FloatingActionButton
+            addTextBtn.setOnClickListener {
                 val dialog = MenuAdditionFragment()
                 dialog.mediaType = mediaType
                 dialog.show(fragmentManager, "menuAddition")
 
                 addMenu.collapse()
             }
+
+            val addQiitaTagBtn = findViewById(R.id.menu_management_add_qiita_tag_btn) as FloatingActionButton
+            addQiitaTagBtn.setOnClickListener {
+                addMenu.collapse()
+
+                val intent = Intent(this, QiitaTagSelectionActivity::class.java)
+                startActivityForResult(intent, 0)
+            }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        data?.let {
+            if (resultCode == Activity.RESULT_OK) {
+                (data.getCharSequenceExtra("selectedTag") as? String)?.let {
+                    try {
+                        mediaMenu.add(it)
+
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                        showError("タグの追加に失敗しました")
+                    }
+
+                    // activity.listView.insert() で最後尾に追加しようとすると落ちるので普通に突っ込む
+                    mediaList.add(it)
+                    adapter.notifyDataSetChanged()
+                    listView.invalidateViews()
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
 
     fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()

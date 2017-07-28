@@ -16,6 +16,7 @@ class ApiUrlString {
     class Qiita {
         companion object {
             val newEntry = "https://qiita.com/api/v2/items"
+            val tagList = "https://qiita.com/api/v2/tags?sort=count&per_page=100"
 
             fun get(keyword: String): String {
                 return "https://qiita.com/api/v2/tags/$keyword/items"

@@ -32,6 +32,15 @@
             app:fab_labelsPosition="left">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/menu_management_add_qiita_tag_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_icon="@drawable/ic_list_white_24dp"
+                app:fab_colorNormal="@color/common"
+                app:fab_title="Qiitaのタグから選ぶ"
+                app:fab_colorPressed="@color/common_active"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/menu_management_add_text_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
