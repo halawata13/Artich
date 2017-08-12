@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import net.halawata.artich.R
 import net.halawata.artich.entity.QiitaTag
@@ -30,6 +31,8 @@ class QiitaTagListAdapter(val context: Context, var data: ArrayList<QiitaTag>, v
         val view = convertView ?: activity.layoutInflater.inflate(resource, null)
 
         (view.findViewById(R.id.qiita_tag_list_title) as TextView).text = item.title
+        // 選択済みのものはチェックマークをつける
+        (view.findViewById(R.id.qiita_tag_list_selected) as ImageView).alpha = if (item.selected) 1F else 0F
 
         return view
     }

@@ -13,13 +13,23 @@ import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import net.halawata.artich.entity.QiitaTag
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.AsyncNetworkTask
+import net.halawata.artich.model.DatabaseHelper
 import net.halawata.artich.model.QiitaTagListAdapter
+import net.halawata.artich.model.config.ConfigList
 import net.halawata.artich.model.config.QiitaTagList
+import net.halawata.artich.model.menu.MediaMenuFactory
 import java.net.HttpURLConnection
 
 class QiitaTagSelectionActivity : AppCompatActivity() {
+
+    companion object {
+        val mediaTypeKey = "mediaTypeKey"
+    }
+
+    lateinit var mediaType: Media
 
     var adapter: QiitaTagListAdapter? = null
     var listView: ListView? = null
@@ -30,6 +40,10 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qiita_tag_selection)
 
+        val mediaString = intent.getStringExtra(QiitaTagSelectionActivity.mediaTypeKey)
+        val configList = ConfigList(resources, ConfigList.Type.MENU)
+        mediaType = configList.getMediaId(mediaString) ?: Media.COMMON
+
         loadingView = findViewById(R.id.loading_view) as RelativeLayout
         loadingText = findViewById(R.id.loading_text) as TextView
 
@@ -39,6 +53,11 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         listView?.adapter = adapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+            // 選択済みのものはダイアログを出さない
+            if (adapter?.data?.get(i)?.selected ?: false) {
+                return@OnItemClickListener
+            }
+
             adapter?.data?.get(i)?.title?.let {
                 val dialog = ConfirmDialogFragment(it)
                 dialog.show(fragmentManager, "qiitaTagAddition")
@@ -59,7 +78,10 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         asyncNetWorkTask.onResponse = { responseCode, content ->
             if (responseCode == HttpURLConnection.HTTP_OK && content != null) {
                 val qiitaTagList = QiitaTagList()
-                qiitaTagList.parse(content)?.let {
+                val helper = DatabaseHelper(this)
+                val menu = MediaMenuFactory.create(mediaType, helper, resources)
+
+                qiitaTagList.parse(content, menu.get())?.let {
                     adapter?.data = it
 
                     listView?.adapter = adapter

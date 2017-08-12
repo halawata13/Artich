@@ -6,7 +6,7 @@ import org.json.JSONException
 
 class QiitaTagList {
 
-    fun parse(content: String): ArrayList<QiitaTag>? {
+    fun parse(content: String, selectedList: ArrayList<String>): ArrayList<QiitaTag>? {
         try {
             val list = ArrayList<QiitaTag>()
 
@@ -14,10 +14,13 @@ class QiitaTagList {
 
             for (i in 0..(items).length() - 1) {
                 val row = items.getJSONObject(i)
+                val title = row.getString("id") ?: break
+                val selected = selectedList.contains(title)
+
                 list.add(QiitaTag(
                         id = i.toLong(),
-                        title = row.getString("id") ?: "",
-                        selected = false
+                        title = title,
+                        selected = selected
                 ))
             }
 

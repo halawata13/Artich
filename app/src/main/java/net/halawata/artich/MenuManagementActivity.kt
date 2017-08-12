@@ -76,11 +76,8 @@ class MenuManagementActivity : AppCompatActivity() {
             }
 
             listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
-                if (listView != null) {
-                    listView.startDragging(position)
-                    true
-                }
-                false
+                listView.startDragging(position)
+                true
             }
 
             listView.enableSwipeToDismiss { listView, reverseSortedPositions ->
@@ -113,6 +110,7 @@ class MenuManagementActivity : AppCompatActivity() {
                 addMenu.collapse()
 
                 val intent = Intent(this, QiitaTagSelectionActivity::class.java)
+                intent.putExtra(QiitaTagSelectionActivity.mediaTypeKey, mediaString)
                 startActivityForResult(intent, 0)
             }
         }
