@@ -14,7 +14,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
             android:minHeight="48dp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/text_color_default"
             android:textSize="20sp"
             tools:ignore="UnusedAttribute" />
 </LinearLayout>

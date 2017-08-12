@@ -29,7 +29,9 @@
                 android:name=".MuteManagementActivity"
                 android:theme="@style/ConfigTheme">
         </activity>
-        <activity android:name=".QiitaTagSelectionActivity">
+        <activity
+                android:name=".QiitaTagSelectionActivity"
+                android:theme="@style/ConfigTheme">
         </activity>
     </application>
 
