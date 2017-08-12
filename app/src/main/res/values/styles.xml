@@ -22,4 +22,8 @@
         <item name="android:radius">8dp</item>
     </style>
 
+    <style name="Tab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>
