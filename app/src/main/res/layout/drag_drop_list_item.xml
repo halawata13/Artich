@@ -19,10 +19,9 @@
             android:id="@+id/drag_drop_list_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
             android:minHeight="48dp"
             android:textColor="@color/text_color_default"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:ignore="UnusedAttribute" />
 </LinearLayout>
