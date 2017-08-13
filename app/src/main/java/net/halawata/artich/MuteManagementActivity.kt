@@ -2,14 +2,19 @@ package net.halawata.artich
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.AdapterView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter
 import net.halawata.artich.entity.ListItem
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.MuteManagementListAdapter
 import net.halawata.artich.model.config.ConfigList
 import net.halawata.artich.model.mute.MediaMuteFactory
@@ -76,6 +81,23 @@ class MuteManagementActivity : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             Toast.makeText(this, "左にスワイプするとミュートを解除します", Toast.LENGTH_LONG).show()
+        }
+
+        // ミュートがひとつもない場合は説明文を表示
+        if (mediaList.count() == 0) {
+            (findViewById(R.id.mute_management_not_found) as RelativeLayout).visibility = View.VISIBLE
+
+            val text = when (mediaType) {
+                Media.HATENA -> resources.getString(R.string.mute_list_not_found_hatena)
+                Media.QIITA -> resources.getString(R.string.mute_list_not_found_qiita)
+                Media.GNEWS -> resources.getString(R.string.mute_list_not_found_gnews)
+                else -> {
+                    Log.e("Invalid Media Type")
+                    ""
+                }
+            }
+
+            (findViewById(R.id.mute_management_not_found_text) as TextView).text = text
         }
     }
 

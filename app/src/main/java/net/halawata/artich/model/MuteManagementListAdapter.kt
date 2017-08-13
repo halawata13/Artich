@@ -16,7 +16,7 @@ class MuteManagementListAdapter(val context: Context, var data: ArrayList<ListIt
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View? = convertView
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.deletable_list_item, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.mute_list_item, parent, false)
         }
 
         (view!!.findViewById(R.id.deletable_list_title) as TextView).text = getItem(position).title
