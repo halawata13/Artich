@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.Toast
 import com.getbase.floatingactionbutton.FloatingActionButton
 import com.getbase.floatingactionbutton.FloatingActionsMenu
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.menu.MediaMenuInterface
 
 class MenuManagementActivity : AppCompatActivity() {
@@ -38,7 +39,7 @@ class MenuManagementActivity : AppCompatActivity() {
         val configList = ConfigList(resources, ConfigList.Type.MENU)
         val mediaType = configList.getMediaId(mediaString)
 
-        title = resources.getString(R.string.menu_management_activity_title) + "（" + mediaString + "）"
+        title = resources.getString(R.string.menu_management_activity_title) + if (mediaType != Media.COMMON) "（$mediaString）" else ""
 
         val helper = DatabaseHelper(this)
 

@@ -40,6 +40,8 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qiita_tag_selection)
 
+        title = resources.getString(R.string.menu_management_activity_title)
+
         val mediaString = intent.getStringExtra(QiitaTagSelectionActivity.mediaTypeKey)
         val configList = ConfigList(resources, ConfigList.Type.MENU)
         mediaType = configList.getMediaId(mediaString) ?: Media.COMMON

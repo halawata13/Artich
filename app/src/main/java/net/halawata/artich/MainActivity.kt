@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import net.halawata.artich.entity.SideMenuItem
+import net.halawata.artich.enum.Media
 import net.halawata.artich.model.DatabaseHelper
 import net.halawata.artich.model.MenuListAdapter
 import net.halawata.artich.model.config.ConfigList
@@ -130,17 +131,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == Menu.FIRST + 1) {
-            val configIntent = Intent(this, ConfigActivity::class.java)
-            configIntent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MENU.num)
-            startActivityForResult(configIntent, 0)
+            val intent = Intent(this, MenuManagementActivity::class.java)
+            intent.putExtra(MenuManagementActivity.mediaTypeKey, resources.getString(R.string.common_list_name))
+            startActivityForResult(intent, 0)
 
             return true
         }
 
         if (item?.itemId == Menu.FIRST + 2) {
-            val configIntent = Intent(this, ConfigActivity::class.java)
-            configIntent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MUTE.num)
-            startActivityForResult(configIntent, 0)
+            val intent = Intent(this, ConfigActivity::class.java)
+            intent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MUTE.num)
+            startActivityForResult(intent, 0)
 
             return true
         }
