@@ -34,17 +34,16 @@ class MenuAdditionFragment : DialogFragment() {
                         val activity = activity as MenuManagementActivity
 
                         try {
-                            mediaMenu.add(text)
+                            // activity.listView.insert() で最後尾に追加しようとすると落ちるので普通に突っ込む
+                            activity.mediaList.add(text)
+                            mediaMenu.save(activity.mediaList)
+                            activity.adapter.notifyDataSetChanged()
+                            activity.listView.invalidateViews()
 
                         } catch (ex: Exception) {
                             ex.printStackTrace()
                             activity.showError("データの読み込みに失敗しました")
                         }
-
-                        // activity.listView.insert() で最後尾に追加しようとすると落ちるので普通に突っ込む
-                        activity.mediaList.add(text)
-                        activity.adapter.notifyDataSetChanged()
-                        activity.listView.invalidateViews()
                     }
                 })
                 .setNegativeButton("キャンセル", null)

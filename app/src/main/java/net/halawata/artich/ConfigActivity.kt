@@ -67,7 +67,7 @@ class ConfigActivity : AppCompatActivity() {
         // ミュート編集から戻る場合は更新フラグを立てておく
         if (configTypeNum == ConfigList.Type.MUTE.num) {
             val intent = Intent()
-            intent.putExtra("reload", true)
+            intent.putExtra("reload_article", true)
             setResult(Activity.RESULT_OK, intent)
         }
 

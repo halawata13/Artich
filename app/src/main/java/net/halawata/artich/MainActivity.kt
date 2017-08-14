@@ -26,6 +26,7 @@ import net.halawata.artich.model.MenuListAdapter
 import net.halawata.artich.model.config.ConfigList
 import net.halawata.artich.model.menu.GNewsMenu
 import net.halawata.artich.model.menu.HatenaMenu
+import net.halawata.artich.model.menu.MediaMenu
 import net.halawata.artich.model.menu.QiitaMenu
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawerToggle: ActionBarDrawerToggle
     lateinit var drawerList: ArrayList<SideMenuItem>
     lateinit var drawerListAdapter: MenuListAdapter
+    lateinit var menu: MediaMenu
 
     lateinit var viewPager: ViewPager
 
@@ -112,10 +114,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         data?.let {
-            if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("reload", false)) {
+            if (data.getBooleanExtra("reload_article", false)) {
                 hatenaListFragment.reload()
                 qiitaListFragment.reload()
                 gNewsListFragment.reload()
+            }
+
+            if (data.getBooleanExtra("reload_menu", false)) {
+                drawerList = menu.getMenuList()
+                drawerListAdapter.data = drawerList
+                drawerListView.adapter = drawerListAdapter
             }
         }
 
@@ -123,8 +131,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menu?.add(Menu.NONE, Menu.FIRST + 1, Menu.NONE, "メニュー管理")
-        menu?.add(Menu.NONE, Menu.FIRST + 2, Menu.NONE, "ミュート")
+        menu?.add(Menu.NONE, Menu.FIRST + 1, Menu.NONE, resources.getString(R.string.menu_management_activity_title))
+        menu?.add(Menu.NONE, Menu.FIRST + 2, Menu.NONE, resources.getString(R.string.mute_management_activity_title))
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -192,8 +200,8 @@ class MainActivity : AppCompatActivity() {
 
         when (position) {
             Page.HATENA.num -> {
-                val hatenaMenu = HatenaMenu(dbHelper, resources)
-                drawerList = hatenaMenu.getMenuList()
+                menu = HatenaMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
 
                 supportActionBar?.title = hatenaListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.hatena)
@@ -202,8 +210,8 @@ class MainActivity : AppCompatActivity() {
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.hatena))
             }
             Page.QIITA.num -> {
-                val qiitaMenu = QiitaMenu(dbHelper, resources)
-                drawerList = qiitaMenu.getMenuList()
+                menu = QiitaMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
 
                 supportActionBar?.title = qiitaListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.qiita)
@@ -212,8 +220,8 @@ class MainActivity : AppCompatActivity() {
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.qiita))
             }
             Page.GNEWS.num -> {
-                val gNewsMenu = GNewsMenu(dbHelper, resources)
-                drawerList = gNewsMenu.getMenuList()
+                menu = GNewsMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
 
                 supportActionBar?.title = gNewsListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.gnews)
@@ -263,5 +271,4 @@ class MainActivity : AppCompatActivity() {
         QIITA(1),
         GNEWS(2),
     }
-
 }

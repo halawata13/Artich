@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager
@@ -84,9 +85,9 @@ class MenuManagementActivity : AppCompatActivity() {
             listView.enableSwipeToDismiss { listView, reverseSortedPositions ->
                 for (position in reverseSortedPositions) {
                     try {
-                        mediaMenu.remove(position)
-
                         mediaList.removeAt(position)
+                        mediaMenu.save(mediaList)
+
                         adapter.notifyDataSetChanged()
                         this.listView.invalidateViews()
 
@@ -122,17 +123,17 @@ class MenuManagementActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 (data.getCharSequenceExtra("selectedTag") as? String)?.let {
                     try {
-                        mediaMenu.add(it)
+                        // activity.listView.insert() で最後尾に追加しようとすると落ちるので普通に突っ込む
+                        mediaList.add(it)
+                        adapter.notifyDataSetChanged()
+                        listView.invalidateViews()
+
+                        mediaMenu.save(mediaList)
 
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         showError("タグの追加に失敗しました")
                     }
-
-                    // activity.listView.insert() で最後尾に追加しようとすると落ちるので普通に突っ込む
-                    mediaList.add(it)
-                    adapter.notifyDataSetChanged()
-                    listView.invalidateViews()
                 }
             }
         }
@@ -140,6 +141,14 @@ class MenuManagementActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // メニューを更新するため更新フラグを立てておく
+        val intent = Intent()
+        intent.putExtra("reload_menu", true)
+        setResult(Activity.RESULT_OK, intent)
+
+        return super.onKeyDown(keyCode, event)
+    }
 
     fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()

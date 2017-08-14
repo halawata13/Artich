@@ -66,10 +66,9 @@ class MuteManagementActivity : AppCompatActivity() {
         listView.enableSwipeToDismiss { listView, reverseSortedPositions ->
             for (position in reverseSortedPositions) {
                 try {
-                    val selectedItem = adapter.getItem(position) as ListItem
-                    mediaMute.remove(selectedItem.id.toInt())
-
                     mediaList.removeAt(position)
+                    mediaMute.save(mediaList)
+
                     adapter.notifyDataSetChanged()
                     this.listView.invalidateViews()
 

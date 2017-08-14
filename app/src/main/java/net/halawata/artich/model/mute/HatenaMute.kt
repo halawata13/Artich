@@ -18,7 +18,7 @@ class HatenaMute(helper: SQLiteOpenHelper): MediaMute(helper) {
         delete(Media.HATENA, id)
     }
 
-    override fun save(data: ArrayList<String>) {
+    override fun save(data: ArrayList<ListItem>) {
         update(Media.HATENA, data)
     }
 }

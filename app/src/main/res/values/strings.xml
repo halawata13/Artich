@@ -12,7 +12,7 @@
     <string name="new_entry">新着エントリー</string>
     <string name="hot_entry">人気エントリー</string>
 
-    <string name="menu_management_activity_title">メニュー編集</string>
+    <string name="menu_management_activity_title">サイドメニュー編集</string>
     <string name="mute_management_activity_title">ミュート</string>
 
     <string name="loading">loading…</string>

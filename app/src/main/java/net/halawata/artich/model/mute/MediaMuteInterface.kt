@@ -10,5 +10,5 @@ interface MediaMuteInterface {
 
     fun remove(id: Int)
 
-    fun save(data: ArrayList<String>)
+    fun save(data: ArrayList<ListItem>)
 }

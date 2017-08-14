@@ -80,6 +80,8 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
     }
 
     override fun request(urlString: String) {
+        currentUrlString = urlString
+
         val asyncNetWorkTask = AsyncNetworkTask()
         asyncNetWorkTask.request(urlString, AsyncNetworkTask.Method.GET)
 

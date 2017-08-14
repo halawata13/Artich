@@ -18,7 +18,7 @@ class QiitaMute(helper: SQLiteOpenHelper): MediaMute(helper) {
         delete(Media.QIITA, id)
     }
 
-    override fun save(data: ArrayList<String>) {
+    override fun save(data: ArrayList<ListItem>) {
         update(Media.QIITA, data)
     }
 }

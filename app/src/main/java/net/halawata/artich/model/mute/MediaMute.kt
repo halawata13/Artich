@@ -36,7 +36,7 @@ abstract class MediaMute(val helper: SQLiteOpenHelper) : MediaMuteInterface {
         return result
     }
 
-    protected fun update(mediaType: Media, data: ArrayList<String>) {
+    protected fun update(mediaType: Media, data: ArrayList<ListItem>) {
         val db = helper.writableDatabase
         db.beginTransaction()
 
@@ -44,10 +44,10 @@ abstract class MediaMute(val helper: SQLiteOpenHelper) : MediaMuteInterface {
             db.delete(getTableName(mediaType), null, null)
 
             var id = 1
-            data.forEach { name ->
+            data.forEach { item ->
                 val values = ContentValues()
                 values.put("id", id)
-                values.put("name", name)
+                values.put("name", item.title)
                 db.insert(getTableName(mediaType), null, values)
 
                 id += 1
@@ -72,7 +72,7 @@ abstract class MediaMute(val helper: SQLiteOpenHelper) : MediaMuteInterface {
 
         try {
             val values = ContentValues()
-            val id = data.count() + 1
+            val id = if (data.isEmpty()) 1 else data.last().id + 1
             values.put("id", id)
             values.put("name", name)
             db.insert(getTableName(mediaType), null, values)

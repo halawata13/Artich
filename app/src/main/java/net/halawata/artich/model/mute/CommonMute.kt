@@ -18,7 +18,7 @@ class CommonMute(helper: SQLiteOpenHelper) : MediaMute(helper) {
         delete(Media.COMMON, id)
     }
 
-    override fun save(data: ArrayList<String>) {
+    override fun save(data: ArrayList<ListItem>) {
         update(Media.COMMON, data)
     }
 }

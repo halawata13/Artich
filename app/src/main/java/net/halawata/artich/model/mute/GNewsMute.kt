@@ -18,7 +18,7 @@ class GNewsMute(helper: SQLiteOpenHelper): MediaMute(helper) {
         delete(Media.GNEWS, id)
     }
 
-    override fun save(data: ArrayList<String>) {
+    override fun save(data: ArrayList<ListItem>) {
         update(Media.GNEWS, data)
     }
 }
