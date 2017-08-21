@@ -114,6 +114,7 @@ class MainActivity : AppCompatActivity() {
             selectSideMenuItem(position)
         }
 
+        // article init
         hatenaListFragment.reload()
     }
 
@@ -204,21 +205,21 @@ class MainActivity : AppCompatActivity() {
         // 現在表示しているメディアの記事を更新しつつ、同名のサイドメニュー項目があれば他のメディアも更新
         when (viewPager.currentItem) {
             Page.HATENA.num -> {
-                hatenaListFragment.update(urlString, title)
+                hatenaListFragment.update(urlString, title, false)
 
                 qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }
                 gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
             }
 
             Page.QIITA.num -> {
-                qiitaListFragment.update(urlString, title)
+                qiitaListFragment.update(urlString, title, false)
 
                 hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
                 gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
             }
 
             Page.GNEWS.num -> {
-                gNewsListFragment.update(urlString, title)
+                gNewsListFragment.update(urlString, title, false)
 
                 hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
                 qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }

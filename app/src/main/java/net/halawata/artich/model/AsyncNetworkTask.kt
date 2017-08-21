@@ -21,7 +21,10 @@ class AsyncNetworkTask : AsyncTask<String, Int, String>() {
             val url = URL(params.first())
             connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = method.toString()
-            connection.useCaches = useCache
+
+            if (!useCache) {
+                connection.addRequestProperty("Cache-Control", "no-cache")
+            }
 
             // POST の場合のパラメータ
             if (method == Method.POST) {

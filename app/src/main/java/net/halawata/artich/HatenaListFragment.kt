@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
     var loadingText: TextView? = null
 
     var adapter: ArticleListAdapter<HatenaArticle>? = null
+
+    private lateinit var listSwipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,12 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
             true
         }
 
+        // SwipeRefreshLayout setup
+        listSwipeRefresh = view.findViewById(R.id.list_swipe_refresh) as SwipeRefreshLayout
+        listSwipeRefresh.setOnRefreshListener {
+            reload(false)
+        }
+
         return view
     }
 
@@ -79,7 +88,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         selectedTitle = title
     }
 
-    override fun update(urlString: String, title: String) {
+    override fun update(urlString: String, title: String, useCache: Boolean) {
         selectedTitle = title
         selectedUrlString = urlString
 
@@ -101,7 +110,9 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
             } ?: run {
                 loadingText?.text = resources.getString(R.string.loading_fail)
             }
-        })
+
+            listSwipeRefresh.isRefreshing = false
+        }, useCache)
     }
 
     override fun applyFilter() {
@@ -111,7 +122,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         }
     }
 
-    override fun reload() {
-        update(selectedUrlString, selectedTitle)
+    override fun reload(useCache: Boolean) {
+        update(selectedUrlString, selectedTitle, useCache)
     }
 }
