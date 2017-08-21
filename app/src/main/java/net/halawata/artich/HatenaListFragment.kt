@@ -13,8 +13,10 @@ import net.halawata.artich.entity.HatenaArticle
 import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.ArticleListAdapter
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.list.HatenaList
 import java.net.HttpURLConnection
+import java.net.URL
 
 class HatenaListFragment : Fragment(), ListFragmentInterface {
 
@@ -54,10 +56,10 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         }
 
         listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
-            val article = adapter?.data?.get(position)
-            val title = article?.url
+            try {
+                val article = adapter?.data?.get(position) as HatenaArticle
+                val title = URL(article.url).host
 
-            title?.let {
                 val dialog = ArticleDialogFragment()
                 dialog.mediaType = Media.HATENA
                 dialog.title = title
@@ -65,6 +67,9 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
                 dialog.setTargetFragment(this, 0)
                 dialog.show(fragmentManager, "articleDialog")
+
+            } catch (ex: Exception) {
+                Log.e(ex.message)
             }
 
             true

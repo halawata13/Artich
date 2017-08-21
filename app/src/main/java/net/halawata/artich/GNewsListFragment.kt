@@ -13,8 +13,10 @@ import net.halawata.artich.entity.GNewsArticle
 import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
 import net.halawata.artich.model.ArticleListAdapter
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.list.GNewsList
 import java.net.HttpURLConnection
+import java.net.URL
 
 class GNewsListFragment : Fragment(), ListFragmentInterface {
 
@@ -54,10 +56,10 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         }
 
         listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
-            val article = adapter?.data?.get(position)
-            val title = article?.url
+            try {
+                val article = adapter?.data?.get(position) as GNewsArticle
+                val title = URL(article.url).host
 
-            title?.let {
                 val dialog = ArticleDialogFragment()
                 dialog.mediaType = Media.GNEWS
                 dialog.title = title
@@ -65,6 +67,9 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
 
                 dialog.setTargetFragment(this, 0)
                 dialog.show(fragmentManager, "articleDialog")
+
+            } catch (ex: Exception) {
+                Log.e(ex.message)
             }
 
             true

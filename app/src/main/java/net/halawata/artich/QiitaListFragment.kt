@@ -54,18 +54,16 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
         }
 
         listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
-            val article = adapter?.data?.get(position)
-            val title = article?.url
+            val article = adapter?.data?.get(position) as QiitaArticle
+            val title = article.user
 
-            title?.let {
-                val dialog = ArticleDialogFragment()
-                dialog.mediaType = Media.QIITA
-                dialog.title = title
-                dialog.article = article
+            val dialog = ArticleDialogFragment()
+            dialog.mediaType = Media.QIITA
+            dialog.title = title
+            dialog.article = article
 
-                dialog.setTargetFragment(this, 0)
-                dialog.show(fragmentManager, "articleDialog")
-            }
+            dialog.setTargetFragment(this, 0)
+            dialog.show(fragmentManager, "articleDialog")
 
             true
         }
