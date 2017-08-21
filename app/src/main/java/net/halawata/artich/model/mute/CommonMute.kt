@@ -6,9 +6,7 @@ import net.halawata.artich.enum.Media
 
 class CommonMute(helper: SQLiteOpenHelper) : MediaMute(helper) {
 
-    override fun get(): ArrayList<ListItem> {
-        return fetch(Media.COMMON)
-    }
+    override fun get(): ArrayList<ListItem> = fetch(Media.COMMON)
 
     override fun add(name: String) {
         insert(Media.COMMON, name)

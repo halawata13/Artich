@@ -66,7 +66,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
             }
         }
 
-        // request
+        // update
         request()
     }
 
@@ -101,7 +101,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
     /**
      * タグ選択確認ダイアログ
      */
-    class ConfirmDialogFragment(val tagName: String? = null) : DialogFragment() {
+    class ConfirmDialogFragment(private val tagName: String? = null) : DialogFragment() {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val builder = AlertDialog.Builder(activity)

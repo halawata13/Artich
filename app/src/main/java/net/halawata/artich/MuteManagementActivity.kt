@@ -100,7 +100,7 @@ class MuteManagementActivity : AppCompatActivity() {
         }
     }
 
-    fun showError(message: String) {
+    private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

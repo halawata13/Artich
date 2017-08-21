@@ -3,6 +3,7 @@ package net.halawata.artich.model.list
 import android.content.Context
 import net.halawata.artich.entity.GNewsArticle
 import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.mute.GNewsMute
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
@@ -26,59 +27,64 @@ class GNewsList(): MediaList {
         var url = ""
         var pubDate = ""
 
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            // item タグ開始が来るまでスキップ
-            if (eventType != XmlPullParser.START_TAG || parser.name != "item") {
+        try {
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                // item タグ開始が来るまでスキップ
+                if (eventType != XmlPullParser.START_TAG || parser.name != "item") {
+                    eventType = parser.next()
+                    continue
+                }
+
+                while (eventType != XmlPullParser.END_TAG || parser.name != "item") {
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "title") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "title") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                title = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "link") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "link") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                url = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "pubDate") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "pubDate") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                pubDate = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    eventType = parser.next()
+                }
+
+                extractUrl(url)?.let {
+                    val article = GNewsArticle(
+                            id = id++,
+                            title = title,
+                            url = it,
+                            pubDate = pubDate
+                    )
+
+                    articles.add(article)
+                }
+
                 eventType = parser.next()
-                continue
             }
 
-            while (eventType != XmlPullParser.END_TAG || parser.name != "item") {
-                if (eventType == XmlPullParser.START_TAG && parser.name == "title") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "title") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            title = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                if (eventType == XmlPullParser.START_TAG && parser.name == "link") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "link") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            url = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                if (eventType == XmlPullParser.START_TAG && parser.name == "pubDate") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "pubDate") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            pubDate = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                eventType = parser.next()
-            }
-
-            extractUrl(url)?.let {
-                val article = GNewsArticle(
-                        id = id++,
-                        title = title,
-                        url = it,
-                        pubDate = pubDate
-                )
-
-                articles.add(article)
-            }
-
-            eventType = parser.next()
+        } catch (ex: Exception) {
+            Log.e(ex.message)
         }
 
         return articles
@@ -99,14 +105,14 @@ class GNewsList(): MediaList {
                 }
 
             } catch (ex: MalformedURLException) {
-                ex.printStackTrace()
+                Log.e(ex.message)
             }
         }
 
         return filtered
     }
 
-    fun extractUrl(urlString: String): String? {
+    private fun extractUrl(urlString: String): String? {
         val regex = Regex("&url=(\\S+$)")
         val result = regex.find(urlString)
 

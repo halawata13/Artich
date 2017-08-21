@@ -23,13 +23,9 @@ class MenuManagementListAdapter(val context: Context, var data: ArrayList<String
         return view
     }
 
-    override fun getItemId(position: Int): Long {
-        return getItem(position).hashCode().toLong()
-    }
+    override fun getItemId(position: Int): Long = getItem(position).hashCode().toLong()
 
-    override fun hasStableIds(): Boolean {
-        return true
-    }
+    override fun hasStableIds(): Boolean = true
 
     override fun getUndoView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
@@ -39,7 +35,5 @@ class MenuManagementListAdapter(val context: Context, var data: ArrayList<String
         return view!!
     }
 
-    override fun getUndoClickView(view: View): View {
-        return view.findViewById(R.id.titleView)
-    }
+    override fun getUndoClickView(view: View): View = view.findViewById(R.id.titleView)
 }

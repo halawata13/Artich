@@ -1,6 +1,5 @@
 package net.halawata.artich
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.database.sqlite.SQLiteOpenHelper
@@ -20,7 +19,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import net.halawata.artich.entity.SideMenuItem
-import net.halawata.artich.enum.Media
+import net.halawata.artich.model.ArticleCache
 import net.halawata.artich.model.DatabaseHelper
 import net.halawata.artich.model.MenuListAdapter
 import net.halawata.artich.model.config.ConfigList
@@ -35,20 +34,31 @@ class MainActivity : AppCompatActivity() {
     val qiitaListFragment = QiitaListFragment()
     val gNewsListFragment = GNewsListFragment()
 
-    val dbHelper: SQLiteOpenHelper = DatabaseHelper(this)
+    private val dbHelper: SQLiteOpenHelper = DatabaseHelper(this)
 
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var drawerListView: ListView
-    lateinit var drawerToggle: ActionBarDrawerToggle
-    lateinit var drawerList: ArrayList<SideMenuItem>
-    lateinit var drawerListAdapter: MenuListAdapter
-    lateinit var menu: MediaMenu
+    private lateinit var hatenaMenu: HatenaMenu
+    private lateinit var qiitaMenu: QiitaMenu
+    private lateinit var gnewsMenu: GNewsMenu
 
-    lateinit var viewPager: ViewPager
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var drawerListView: ListView
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+    private lateinit var drawerList: ArrayList<SideMenuItem>
+    private lateinit var drawerListAdapter: MenuListAdapter
+    private lateinit var menu: MediaMenu
+
+    private lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ArticleCache.init(this)
+
+        // SideMenu setup
+        hatenaMenu = HatenaMenu(dbHelper, resources)
+        qiitaMenu = QiitaMenu(dbHelper, resources)
+        gnewsMenu = GNewsMenu(dbHelper, resources)
 
         // TabLayout setup
         val tabLayout = findViewById(R.id.tab_layout) as TabLayout
@@ -66,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 selectPage(position)
+                reloadArticle(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -100,10 +111,10 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(drawerToggle)
 
         drawerListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            selectItem(position)
+            selectSideMenuItem(position)
         }
 
-        selectItem(0)
+        hatenaListFragment.reload()
     }
 
     override fun onResume() {
@@ -112,14 +123,22 @@ class MainActivity : AppCompatActivity() {
         drawerListAdapter.notifyDataSetChanged()
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        ArticleCache.clear()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         data?.let {
+            // 記事更新フラグが立ってたら更新
             if (data.getBooleanExtra("reload_article", false)) {
                 hatenaListFragment.reload()
                 qiitaListFragment.reload()
                 gNewsListFragment.reload()
             }
 
+            // サイドメニュー更新フラグが立っていたら更新
             if (data.getBooleanExtra("reload_menu", false)) {
                 drawerList = menu.getMenuList()
                 drawerListAdapter.data = drawerList
@@ -138,6 +157,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        // サイドメニュー編集
         if (item?.itemId == Menu.FIRST + 1) {
             val intent = Intent(this, MenuManagementActivity::class.java)
             intent.putExtra(MenuManagementActivity.mediaTypeKey, resources.getString(R.string.common_list_name))
@@ -146,6 +166,7 @@ class MainActivity : AppCompatActivity() {
             return true
         }
 
+        // ミュート
         if (item?.itemId == Menu.FIRST + 2) {
             val intent = Intent(this, ConfigActivity::class.java)
             intent.putExtra(ConfigActivity.configTypeKey, ConfigList.Type.MUTE.num)
@@ -171,63 +192,96 @@ class MainActivity : AppCompatActivity() {
         drawerToggle.onConfigurationChanged(newConfig)
     }
 
-    fun selectItem(position: Int) {
+    /**
+     * サイドメニュー項目選択時
+     */
+    private fun selectSideMenuItem(position: Int) {
         val title = drawerList[position].title
         val urlString = drawerList[position].urlString
 
         supportActionBar?.title = title
 
+        // 現在表示しているメディアの記事を更新しつつ、同名のサイドメニュー項目があれば他のメディアも更新
         when (viewPager.currentItem) {
             Page.HATENA.num -> {
-                hatenaListFragment.request(urlString)
-                hatenaListFragment.selectedTitle = title
+                hatenaListFragment.update(urlString, title)
+
+                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }
+                gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
             }
+
             Page.QIITA.num -> {
-                qiitaListFragment.request(urlString)
-                qiitaListFragment.selectedTitle = title
+                qiitaListFragment.update(urlString, title)
+
+                hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
+                gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
             }
+
             Page.GNEWS.num -> {
-                gNewsListFragment.request(urlString)
-                gNewsListFragment.selectedTitle = title
+                gNewsListFragment.update(urlString, title)
+
+                hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
+                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }
             }
         }
 
         drawerLayout.closeDrawer(drawerListView)
     }
 
+    /**
+     * ページャー移動時
+     */
     fun selectPage(position: Int) {
         val tabLayout = findViewById(R.id.tab_layout) as TabLayout
 
         when (position) {
             Page.HATENA.num -> {
-                menu = HatenaMenu(dbHelper, resources)
-                drawerList = menu.getMenuList()
-
                 supportActionBar?.title = hatenaListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.hatena)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.hatena, null))
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.hatena))
             }
-            Page.QIITA.num -> {
-                menu = QiitaMenu(dbHelper, resources)
-                drawerList = menu.getMenuList()
 
+            Page.QIITA.num -> {
                 supportActionBar?.title = qiitaListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.qiita)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.qiita, null))
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.qiita))
             }
-            Page.GNEWS.num -> {
-                menu = GNewsMenu(dbHelper, resources)
-                drawerList = menu.getMenuList()
 
+            Page.GNEWS.num -> {
                 supportActionBar?.title = gNewsListFragment.selectedTitle
                 window.statusBarColor = resources.getColor(R.color.gnews)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gnews, null))
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.gnews))
+            }
+        }
+    }
+
+    fun reloadArticle(position: Int) {
+        when (position) {
+            Page.HATENA.num -> {
+                menu = HatenaMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
+
+                hatenaListFragment.reload()
+            }
+
+            Page.QIITA.num -> {
+                menu = QiitaMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
+
+                qiitaListFragment.reload()
+            }
+
+            Page.GNEWS.num -> {
+                menu = GNewsMenu(dbHelper, resources)
+                drawerList = menu.getMenuList()
+
+                gNewsListFragment.reload()
             }
         }
 
@@ -249,9 +303,7 @@ class MainActivity : AppCompatActivity() {
             return fragment
         }
 
-        override fun getCount(): Int {
-            return Page.values().count()
-        }
+        override fun getCount(): Int = Page.values().count()
 
         override fun getPageTitle(position: Int): CharSequence {
             var title = ""

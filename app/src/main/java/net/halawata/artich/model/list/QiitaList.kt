@@ -1,9 +1,9 @@
 package net.halawata.artich.model.list
 
 import android.content.Context
-import android.util.Log
 import net.halawata.artich.entity.QiitaArticle
 import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.mute.QiitaMute
 import org.json.JSONArray
 import org.json.JSONException
@@ -16,7 +16,7 @@ class QiitaList(): MediaList {
             val items = JSONArray(content)
             val articles = ArrayList<QiitaArticle>()
 
-            for (i in 0..(items).length() - 1) {
+            for (i in 0 until (items).length()) {
                 val row = items.getJSONObject(i)
 
                 val article = QiitaArticle(
@@ -31,8 +31,9 @@ class QiitaList(): MediaList {
             }
 
             return articles
+
         } catch (ex: JSONException) {
-            Log.e("JSONException", ex.message)
+            Log.e(ex.message)
             return null
         }
     }

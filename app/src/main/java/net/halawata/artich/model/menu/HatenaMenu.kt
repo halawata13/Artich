@@ -9,17 +9,7 @@ import net.halawata.artich.model.ApiUrlString
 
 class HatenaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(helper, resources) {
 
-    override fun get(): ArrayList<String> {
-        return fetch(Media.HATENA)
-    }
-
-    override fun add(name: String) {
-        insert(Media.HATENA, name)
-    }
-
-    override fun remove(index: Int) {
-        delete(Media.HATENA, index + 1)
-    }
+    override fun get(): ArrayList<String> = fetch(Media.HATENA)
 
     override fun save(data: ArrayList<String>) {
         update(Media.HATENA, data)
@@ -53,5 +43,11 @@ class HatenaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(hel
         }
 
         return menuItems
+    }
+
+    override fun getUrlStringFrom(title: String): String? {
+        val list = getMenuList()
+
+        return list.firstOrNull { it.title == title }?.urlString
     }
 }

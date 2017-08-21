@@ -9,17 +9,7 @@ import net.halawata.artich.model.ApiUrlString
 
 class QiitaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(helper, resources) {
 
-    override fun get(): ArrayList<String> {
-        return fetch(Media.QIITA)
-    }
-
-    override fun add(name: String) {
-        insert(Media.QIITA, name)
-    }
-
-    override fun remove(index: Int) {
-        delete(Media.QIITA, index + 1)
-    }
+    override fun get(): ArrayList<String> = fetch(Media.QIITA)
 
     override fun save(data: ArrayList<String>) {
         update(Media.QIITA, data)
@@ -29,7 +19,7 @@ class QiitaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(help
         val menuItems: ArrayList<SideMenuItem> = arrayListOf()
 
         var id: Long = 0
-        val menuList = resources.getStringArray(R.array.menu_list)
+        val menuList = fetch(Media.COMMON) + fetch(Media.QIITA)
 
         menuItems.add(SideMenuItem(
                 id = id++,
@@ -46,5 +36,11 @@ class QiitaMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(help
         }
 
         return menuItems
+    }
+
+    override fun getUrlStringFrom(title: String): String? {
+        val list = getMenuList()
+
+        return list.firstOrNull { it.title == title }?.urlString
     }
 }

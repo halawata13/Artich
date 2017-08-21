@@ -3,6 +3,7 @@ package net.halawata.artich.model.list
 import android.content.Context
 import net.halawata.artich.entity.HatenaArticle
 import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.mute.HatenaMute
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
@@ -26,57 +27,62 @@ class HatenaList(): MediaList {
         var url = ""
         var pubDate = ""
 
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            // item タグ開始が来るまでスキップ
-            if (eventType != XmlPullParser.START_TAG || parser.name != "item") {
+        try {
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                // item タグ開始が来るまでスキップ
+                if (eventType != XmlPullParser.START_TAG || parser.name != "item") {
+                    eventType = parser.next()
+                    continue
+                }
+
+                while (eventType != XmlPullParser.END_TAG || parser.name != "item") {
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "title") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "title") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                title = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "link") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "link") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                url = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "dc:date") {
+                        while (eventType != XmlPullParser.END_TAG || parser.name != "dc:date") {
+                            if (eventType == XmlPullParser.TEXT) {
+                                pubDate = parser.text
+                            }
+
+                            eventType = parser.next()
+                        }
+                    }
+
+                    eventType = parser.next()
+                }
+
+                val article = HatenaArticle(
+                        id = id++,
+                        title = title,
+                        url = url,
+                        pubDate = pubDate
+                )
+
+                articles.add(article)
+
                 eventType = parser.next()
-                continue
             }
 
-            while (eventType != XmlPullParser.END_TAG || parser.name != "item") {
-                if (eventType == XmlPullParser.START_TAG && parser.name == "title") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "title") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            title = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                if (eventType == XmlPullParser.START_TAG && parser.name == "link") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "link") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            url = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                if (eventType == XmlPullParser.START_TAG && parser.name == "dc:date") {
-                    while (eventType != XmlPullParser.END_TAG || parser.name != "dc:date") {
-                        if (eventType == XmlPullParser.TEXT) {
-                            pubDate = parser.text
-                        }
-
-                        eventType = parser.next()
-                    }
-                }
-
-                eventType = parser.next()
-            }
-
-            val article = HatenaArticle(
-                    id = id++,
-                    title = title,
-                    url = url,
-                    pubDate = pubDate
-            )
-
-            articles.add(article)
-
-            eventType = parser.next()
+        } catch (ex: Exception) {
+            Log.e(ex.message)
         }
 
         return articles
@@ -97,7 +103,7 @@ class HatenaList(): MediaList {
                 }
 
             } catch (ex: MalformedURLException) {
-                ex.printStackTrace()
+                Log.e(ex.message)
             }
         }
 

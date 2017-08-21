@@ -4,16 +4,13 @@ import android.content.res.Resources
 import android.database.sqlite.SQLiteOpenHelper
 import net.halawata.artich.enum.Media
 
-class MediaMenuFactory {
+object MediaMenuFactory {
 
-    companion object {
-        fun create(mediaType: Media, helper: SQLiteOpenHelper, resources: Resources): MediaMenuInterface {
+    fun create(mediaType: Media, helper: SQLiteOpenHelper, resources: Resources): MediaMenuInterface =
             when (mediaType) {
-                Media.COMMON -> return CommonMenu(helper, resources)
-                Media.HATENA -> return HatenaMenu(helper, resources)
-                Media.QIITA -> return QiitaMenu(helper, resources)
-                Media.GNEWS -> return GNewsMenu(helper, resources)
+                Media.COMMON -> CommonMenu(helper, resources)
+                Media.HATENA -> HatenaMenu(helper, resources)
+                Media.QIITA -> QiitaMenu(helper, resources)
+                Media.GNEWS -> GNewsMenu(helper, resources)
             }
-        }
-    }
 }

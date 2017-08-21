@@ -9,17 +9,7 @@ import net.halawata.artich.model.ApiUrlString
 
 class GNewsMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(helper, resources) {
 
-    override fun get(): ArrayList<String> {
-        return fetch(Media.GNEWS)
-    }
-
-    override fun add(name: String) {
-        insert(Media.GNEWS, name)
-    }
-
-    override fun remove(index: Int) {
-        delete(Media.GNEWS, index + 1)
-    }
+    override fun get(): ArrayList<String> = fetch(Media.GNEWS)
 
     override fun save(data: ArrayList<String>) {
         update(Media.GNEWS, data)
@@ -29,22 +19,28 @@ class GNewsMenu(helper: SQLiteOpenHelper, resources: Resources) : MediaMenu(help
         val menuItems: ArrayList<SideMenuItem> = arrayListOf()
 
         var id: Long = 0
-        val menuList = resources.getStringArray(R.array.menu_list)
+        val menuList = fetch(Media.COMMON) + fetch(Media.GNEWS)
 
         menuItems.add(SideMenuItem(
                 id = id++,
-                urlString = ApiUrlString.Qiita.newEntry,
+                urlString = ApiUrlString.GNews.newEntry,
                 title = resources.getString(R.string.new_entry)
         ))
 
         menuList.forEach { title ->
             menuItems.add(SideMenuItem(
                     id = id++,
-                    urlString = ApiUrlString.Qiita.get(title),
+                    urlString = ApiUrlString.GNews.get(title),
                     title = title
             ))
         }
 
         return menuItems
+    }
+
+    override fun getUrlStringFrom(title: String): String? {
+        val list = getMenuList()
+
+        return list.firstOrNull { it.title == title }?.urlString
     }
 }

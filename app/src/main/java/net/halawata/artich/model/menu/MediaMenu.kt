@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
 import net.halawata.artich.enum.Media
+import net.halawata.artich.model.Log
 import java.lang.Exception
 
 abstract class MediaMenu(val helper: SQLiteOpenHelper, val resources: Resources) : MediaMenuInterface {
@@ -25,7 +26,7 @@ abstract class MediaMenu(val helper: SQLiteOpenHelper, val resources: Resources)
             }
 
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            Log.e(ex.message)
             throw ex
 
         } finally {
@@ -56,50 +57,7 @@ abstract class MediaMenu(val helper: SQLiteOpenHelper, val resources: Resources)
             db.setTransactionSuccessful()
 
         } catch (ex: Exception) {
-            ex.printStackTrace()
-            throw ex
-
-        } finally {
-            db.endTransaction()
-            db.close()
-        }
-    }
-
-    protected fun insert(mediaType: Media, name: String) {
-        val data = fetch(mediaType)
-        val db = helper.writableDatabase
-        db.beginTransaction()
-
-        try {
-            val values = ContentValues()
-            val id = data.count() + 1
-            values.put("id", id)
-            values.put("name", name)
-            db.insert(getTableName(mediaType), null, values)
-
-            db.setTransactionSuccessful()
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            throw ex
-
-        } finally {
-            db.endTransaction()
-            db.close()
-        }
-    }
-
-    protected fun delete(mediaType: Media, id: Int) {
-        val db = helper.writableDatabase
-        db.beginTransaction()
-
-        try {
-            db.delete(getTableName(mediaType), "id = ?", arrayOf(id.toString()))
-
-            db.setTransactionSuccessful()
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
+            Log.e(ex.message)
             throw ex
 
         } finally {

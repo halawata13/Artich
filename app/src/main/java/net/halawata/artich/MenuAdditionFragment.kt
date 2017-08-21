@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.EditText
 import net.halawata.artich.enum.Media
 import net.halawata.artich.model.DatabaseHelper
+import net.halawata.artich.model.Log
 import net.halawata.artich.model.menu.MediaMenuFactory
 
 class MenuAdditionFragment : DialogFragment() {
@@ -41,7 +42,7 @@ class MenuAdditionFragment : DialogFragment() {
                             activity.listView.invalidateViews()
 
                         } catch (ex: Exception) {
-                            ex.printStackTrace()
+                            Log.e(ex.message)
                             activity.showError("データの読み込みに失敗しました")
                         }
                     }

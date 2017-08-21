@@ -42,15 +42,14 @@ class ConfigList(val resources: Resources, val type: Type) {
         return menuItems
     }
 
-    fun getMediaId(title: String): Media? {
-        when (title) {
-            resources.getString(R.string.common_list_name) -> return Media.COMMON
-            resources.getString(R.string.hatena_list_name) -> return Media.HATENA
-            resources.getString(R.string.qiita_list_name) -> return Media.QIITA
-            resources.getString(R.string.gnews_list_name) -> return Media.GNEWS
-            else -> return null
-        }
-    }
+    fun getMediaId(title: String): Media? =
+            when (title) {
+                resources.getString(R.string.common_list_name) -> Media.COMMON
+                resources.getString(R.string.hatena_list_name) -> Media.HATENA
+                resources.getString(R.string.qiita_list_name) -> Media.QIITA
+                resources.getString(R.string.gnews_list_name) -> Media.GNEWS
+                else -> null
+            }
 
     enum class Type(val num: Int) {
         MENU(0),

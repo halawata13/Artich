@@ -21,14 +21,12 @@ class ArticleDialogFragment() : DialogFragment() {
     lateinit var title: String
     lateinit var article: Article
 
-    val menuItems: Array<String>
-        get() {
-            when (mediaType) {
-                Media.COMMON -> return arrayOf()
-                Media.HATENA -> return arrayOf("このサイトをミュートする")
-                Media.QIITA -> return arrayOf("このユーザーをミュートする")
-                Media.GNEWS -> return arrayOf("このサイトをミュートする")
-            }
+    private val menuItems: Array<String>
+        get() = when (mediaType) {
+            Media.COMMON -> arrayOf()
+            Media.HATENA -> arrayOf("このサイトをミュートする")
+            Media.QIITA -> arrayOf("このユーザーをミュートする")
+            Media.GNEWS -> arrayOf("このサイトをミュートする")
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

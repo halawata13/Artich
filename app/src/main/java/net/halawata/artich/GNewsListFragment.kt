@@ -11,7 +11,6 @@ import android.widget.*
 import net.halawata.artich.entity.GNewsArticle
 import net.halawata.artich.enum.Media
 import net.halawata.artich.model.ApiUrlString
-import net.halawata.artich.model.AsyncNetworkTask
 import net.halawata.artich.model.ArticleListAdapter
 import net.halawata.artich.model.list.GNewsList
 import java.net.HttpURLConnection
@@ -20,18 +19,16 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
 
     override val list = GNewsList()
 
-    lateinit var selectedTitle: String
+    var selectedTitle = "新着エントリー"
+    var selectedUrlString = ApiUrlString.GNews.newEntry
 
     var listView: ListView? = null
     var loadingView: RelativeLayout? = null
     var loadingText: TextView? = null
 
     var adapter: ArticleListAdapter<GNewsArticle>? = null
-    var currentUrlString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        selectedTitle = resources.getString(R.string.new_entry)
-
         super.onCreate(savedInstanceState)
     }
 
@@ -45,17 +42,15 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
         listView?.adapter = adapter
 
-        request(ApiUrlString.GNews.newEntry)
-
-        listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val text = ((view as LinearLayout).getChildAt(1) as TextView).text as String
+        listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
+            val text = ((v as LinearLayout).getChildAt(1) as TextView).text as String
 
             Uri.parse(text).let {
                 startActivity(Intent(Intent.ACTION_VIEW, it))
             }
         }
 
-        listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
             val article = adapter?.data?.get(position)
             val title = article?.url
 
@@ -79,27 +74,34 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         applyFilter()
     }
 
-    override fun request(urlString: String) {
-        currentUrlString = urlString
+    override fun reserve(urlString: String, title: String) {
+        selectedUrlString = urlString
+        selectedTitle = title
+    }
 
-        val asyncNetWorkTask = AsyncNetworkTask()
-        asyncNetWorkTask.request(urlString, AsyncNetworkTask.Method.GET)
+    override fun update(urlString: String, title: String) {
+        selectedTitle = title
+        selectedUrlString = urlString
 
         loadingView?.alpha = 1F
         loadingText?.text = resources.getString(R.string.loading)
 
-        asyncNetWorkTask.onResponse = { responseCode, content ->
-            if (responseCode == HttpURLConnection.HTTP_OK && content != null) {
-                list.parse(content)?.let {
-                    adapter?.data = list.filter(it, activity)
+        request(urlString, title, { responseCode, content ->
+            content?.let {
+                if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
+                    list.parse(content)?.let {
+                        adapter?.data = list.filter(it, activity)
 
-                    listView?.adapter = adapter
-                    loadingView?.alpha = 0F
+                        listView?.adapter = adapter
+                        loadingView?.alpha = 0F
+                    }
+                } else {
+                    loadingText?.text = resources.getString(R.string.loading_fail)
                 }
-            } else {
+            } ?: run {
                 loadingText?.text = resources.getString(R.string.loading_fail)
             }
-        }
+        })
     }
 
     override fun applyFilter() {
@@ -110,8 +112,6 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
     }
 
     override fun reload() {
-        currentUrlString?.let {
-            request(it)
-        }
+        update(selectedUrlString, selectedTitle)
     }
 }

@@ -27,7 +27,7 @@ object Log {
      */
     private val tag: String
         get() {
-            val trace = Thread.currentThread().stackTrace[1]
+            val trace = Thread.currentThread().stackTrace[4]
             val traceClass = trace.className
             val splitStr = Pattern.compile("[.]+").split(traceClass)
 
@@ -35,8 +35,6 @@ object Log {
             val methodName = trace.methodName
             val line = trace.lineNumber
 
-            val tag = "$className#$methodName:$line"
-
-            return tag
+            return "$className#$methodName:$line"
         }
 }

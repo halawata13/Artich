@@ -25,10 +25,4 @@
     <string name="mute_list_not_found_hatena">ミュートしたサイトが表示されます。\n記事の長押しでミュートすることができます。</string>
     <string name="mute_list_not_found_qiita">ミュートしたユーザーが表示されます。\n記事の長押しでミュートすることができます。</string>
     <string name="mute_list_not_found_gnews">ミュートしたサイトが表示されます。\n記事の長押しでミュートすることができます。</string>
-
-    <string-array name="menu_list">
-        <item>Kotlin</item>
-        <item>Swift</item>
-        <item>JavaScript</item>
-    </string-array>
 </resources>

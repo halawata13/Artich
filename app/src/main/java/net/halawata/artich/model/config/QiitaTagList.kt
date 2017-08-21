@@ -1,6 +1,7 @@
 package net.halawata.artich.model.config
 
 import net.halawata.artich.entity.QiitaTag
+import net.halawata.artich.model.Log
 import org.json.JSONArray
 import org.json.JSONException
 
@@ -12,7 +13,7 @@ class QiitaTagList {
 
             val items = JSONArray(content)
 
-            for (i in 0..(items).length() - 1) {
+            for (i in 0 until (items).length()) {
                 val row = items.getJSONObject(i)
                 val title = row.getString("id") ?: break
                 val selected = selectedList.contains(title)
@@ -27,7 +28,7 @@ class QiitaTagList {
             return list
 
         } catch (ex: JSONException) {
-            ex.printStackTrace()
+            Log.e(ex.message)
             return null
         }
     }

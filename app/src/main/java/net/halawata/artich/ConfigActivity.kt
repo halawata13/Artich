@@ -31,7 +31,7 @@ class ConfigActivity : AppCompatActivity() {
 
         when (configTypeNum) {
             ConfigList.Type.MENU.num -> {
-                title = "メニュー編集"
+                title = resources.getString(R.string.menu_management_activity_title)
 
                 val configList = ConfigList(resources, ConfigList.Type.MENU)
                 val adapter = ConfigListAdapter(this, configList.getMenuList(), R.layout.config_list_item)
@@ -40,13 +40,13 @@ class ConfigActivity : AppCompatActivity() {
 
                 listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                     val mediaType = ((view as LinearLayout).getChildAt(0) as TextView).text as String
-                    val menuManagementIntent = Intent(this, MenuManagementActivity::class.java)
-                    menuManagementIntent.putExtra(MenuManagementActivity.mediaTypeKey, mediaType)
-                    startActivity(menuManagementIntent)
+                    val intent = Intent(this, MenuManagementActivity::class.java)
+                    intent.putExtra(MenuManagementActivity.mediaTypeKey, mediaType)
+                    startActivity(intent)
                 }
             }
             ConfigList.Type.MUTE.num -> {
-                title = "ミュート"
+                title = resources.getString(R.string.mute_management_activity_title)
 
                 val configList = ConfigList(resources, ConfigList.Type.MUTE)
                 val adapter = ConfigListAdapter(this, configList.getMenuList(), R.layout.config_list_item)
@@ -55,9 +55,9 @@ class ConfigActivity : AppCompatActivity() {
 
                 listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                     val mediaType = ((view as LinearLayout).getChildAt(0) as TextView).text as String
-                    val muteManagementIntent = Intent(this, MuteManagementActivity::class.java)
-                    muteManagementIntent.putExtra(MuteManagementActivity.mediaTypeKey, mediaType)
-                    startActivity(muteManagementIntent)
+                    val intent = Intent(this, MuteManagementActivity::class.java)
+                    intent.putExtra(MuteManagementActivity.mediaTypeKey, mediaType)
+                    startActivity(intent)
                 }
             }
         }

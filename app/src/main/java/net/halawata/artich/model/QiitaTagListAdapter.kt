@@ -12,17 +12,11 @@ import net.halawata.artich.entity.QiitaTag
 
 class QiitaTagListAdapter(val context: Context, var data: ArrayList<QiitaTag>, val resource: Int) : BaseAdapter() {
 
-    override fun getCount(): Int {
-        return data.size
-    }
+    override fun getCount(): Int = data.size
 
-    override fun getItem(position: Int): Any {
-        return data[position]
-    }
+    override fun getItem(position: Int): Any = data[position]
 
-    override fun getItemId(position: Int): Long {
-        return data[position].id
-    }
+    override fun getItemId(position: Int): Long = data[position].id
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val activity = context as Activity
