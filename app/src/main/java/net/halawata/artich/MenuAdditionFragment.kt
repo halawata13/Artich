@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DialogFragment
 import android.content.Context
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.os.Bundle
 import android.widget.EditText
@@ -25,7 +24,7 @@ class MenuAdditionFragment : DialogFragment() {
         builder.setView(content)
 
         builder.setTitle("項目を追加")
-                .setPositiveButton("追加", DialogInterface.OnClickListener { dialogInterface, i ->
+                .setPositiveButton("追加", { dialogInterface, i ->
                     val editText = content.findViewById(R.id.menu_addition_text) as EditText
 
                     mediaType?.let {

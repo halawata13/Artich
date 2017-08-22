@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DialogFragment
-import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -114,7 +113,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
             }
 
             builder.setTitle(title)
-                    .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                    .setPositiveButton("OK", { dialogInterface, i ->
                         val intent = Intent()
                         intent.putExtra("selectedTag", tagName)
                         activity.setResult(Activity.RESULT_OK, intent)

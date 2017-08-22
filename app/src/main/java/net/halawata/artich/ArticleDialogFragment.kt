@@ -2,7 +2,6 @@ package net.halawata.artich
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.Toast
@@ -15,7 +14,7 @@ import net.halawata.artich.model.mute.HatenaMute
 import net.halawata.artich.model.mute.QiitaMute
 import java.net.URL
 
-class ArticleDialogFragment() : DialogFragment() {
+class ArticleDialogFragment : DialogFragment() {
 
     lateinit var mediaType: Media
     lateinit var title: String
@@ -33,7 +32,7 @@ class ArticleDialogFragment() : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
 
         builder.setTitle(title)
-                .setItems(menuItems, DialogInterface.OnClickListener { dialogInterface, i ->
+                .setItems(menuItems, { dialogInterface, i ->
                     val helper = DatabaseHelper(activity)
 
                     when (mediaType) {

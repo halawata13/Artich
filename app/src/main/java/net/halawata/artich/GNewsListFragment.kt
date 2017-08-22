@@ -25,11 +25,10 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
     var selectedTitle = "新着エントリー"
     var selectedUrlString = ApiUrlString.GNews.newEntry
 
-    var listView: ListView? = null
-    var loadingView: RelativeLayout? = null
-    var loadingText: TextView? = null
-
-    var adapter: ArticleListAdapter<GNewsArticle>? = null
+    private var listView: ListView? = null
+    private var loadingView: RelativeLayout? = null
+    private var loadingText: TextView? = null
+    private var adapter: ArticleListAdapter<GNewsArticle>? = null
 
     private lateinit var listSwipeRefresh: SwipeRefreshLayout
 
@@ -50,7 +49,7 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
             val text = ((v as LinearLayout).getChildAt(1) as TextView).text as String
 
-            Uri.parse(text).let {
+            Uri.parse(text)?.let {
                 startActivity(Intent(Intent.ACTION_VIEW, it))
             }
         }

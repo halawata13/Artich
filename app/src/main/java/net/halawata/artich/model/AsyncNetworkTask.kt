@@ -8,9 +8,10 @@ import java.net.URL
 
 class AsyncNetworkTask : AsyncTask<String, Int, String>() {
 
-    var method = Method.GET
-    var useCache = true
-    var responseCode: Int? = null
+    private var method = Method.GET
+    private var useCache = true
+    private var responseCode: Int? = null
+
     var onResponse: ((responseCode: Int?, content: String?) -> Unit)? = null
 
     override fun doInBackground(vararg params: String?): String? {
