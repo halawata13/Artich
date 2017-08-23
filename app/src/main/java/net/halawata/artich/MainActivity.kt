@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // article init
-        hatenaListFragment.reload()
+        reloadArticle(Page.HATENA.num)
     }
 
     override fun onResume() {

@@ -101,12 +101,18 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
 
         request(urlString, title, { responseCode, content ->
             content?.let {
-                if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     list.parse(content)?.let {
-                        adapter?.data = list.filter(it, activity)
+                        val filtered = list.filter(it, activity)
 
-                        listView?.adapter = adapter
-                        loadingView?.alpha = 0F
+                        if (filtered.count() > 0) {
+                            adapter?.data = list.filter(it, activity)
+
+                            listView?.adapter = adapter
+                            loadingView?.alpha = 0F
+                        } else {
+                            loadingText?.text = resources.getString(R.string.loading_not_found)
+                        }
                     }
                 } else {
                     loadingText?.text = resources.getString(R.string.loading_fail)

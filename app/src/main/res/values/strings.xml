@@ -17,6 +17,7 @@
 
     <string name="loading">loading…</string>
     <string name="loading_fail">記事の読み込みに失敗しました</string>
+    <string name="loading_not_found">該当する記事が見つかりませんでした</string>
 
     <string name="loading_tag">loading…</string>
     <string name="loading_fail_tag">タグの読み込みに失敗しました</string>
