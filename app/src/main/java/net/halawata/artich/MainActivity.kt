@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // cache init
         ArticleCache.init(this)
 
         // SideMenu setup
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 selectPage(position)
-                reloadArticle(position)
+                reloadMenu(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -115,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // article init
-        reloadArticle(Page.HATENA.num)
+        reloadMenu(Page.HATENA.num)
     }
 
     override fun onResume() {
@@ -127,6 +128,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 
+        // cache clear
         ArticleCache.clear()
     }
 
@@ -205,24 +207,24 @@ class MainActivity : AppCompatActivity() {
         // 現在表示しているメディアの記事を更新しつつ、同名のサイドメニュー項目があれば他のメディアも更新
         when (viewPager.currentItem) {
             Page.HATENA.num -> {
-                hatenaListFragment.update(urlString, title, false)
+                hatenaListFragment.update(urlString, title)
 
-                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }
+                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.update(it, title) }
                 gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
             }
 
             Page.QIITA.num -> {
-                qiitaListFragment.update(urlString, title, false)
+                qiitaListFragment.update(urlString, title)
 
-                hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
-                gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.reserve(it, title) }
+                hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.update(it, title) }
+                gnewsMenu.getUrlStringFrom(title)?.let { gNewsListFragment.update(it, title) }
             }
 
             Page.GNEWS.num -> {
-                gNewsListFragment.update(urlString, title, false)
+                gNewsListFragment.update(urlString, title)
 
                 hatenaMenu.getUrlStringFrom(title)?.let { hatenaListFragment.reserve(it, title) }
-                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.reserve(it, title) }
+                qiitaMenu.getUrlStringFrom(title)?.let { qiitaListFragment.update(it, title) }
             }
         }
 
@@ -262,27 +264,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun reloadArticle(position: Int) {
+    fun reloadMenu(position: Int) {
         when (position) {
             Page.HATENA.num -> {
                 menu = HatenaMenu(dbHelper, resources)
                 drawerList = menu.getMenuList()
-
-                hatenaListFragment.reload()
             }
 
             Page.QIITA.num -> {
                 menu = QiitaMenu(dbHelper, resources)
                 drawerList = menu.getMenuList()
-
-                qiitaListFragment.reload()
             }
 
             Page.GNEWS.num -> {
                 menu = GNewsMenu(dbHelper, resources)
                 drawerList = menu.getMenuList()
-
-                gNewsListFragment.reload()
             }
         }
 
@@ -317,6 +313,8 @@ class MainActivity : AppCompatActivity() {
 
             return title
         }
+
+
     }
 
     private enum class Page(val num: Int) {

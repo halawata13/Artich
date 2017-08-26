@@ -55,7 +55,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             // 選択済みのものはダイアログを出さない
-            if (adapter?.data?.get(i)?.selected ?: false) {
+            if (adapter?.data?.get(i)?.selected == true) {
                 return@OnItemClickListener
             }
 
@@ -69,7 +69,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         request()
     }
 
-    fun request() {
+    private fun request() {
         loadingView?.alpha = 1F
         loadingText?.text = resources.getString(R.string.loading_tag)
 

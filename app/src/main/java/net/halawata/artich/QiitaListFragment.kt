@@ -20,8 +20,8 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
 
     override val list = QiitaList()
 
-    var selectedTitle = "新着エントリー"
-    var selectedUrlString = ApiUrlString.Qiita.newEntry
+    override var selectedTitle = "新着エントリー"
+    override var selectedUrlString = ApiUrlString.Qiita.newEntry
 
     private var listView: ListView? = null
     private var loadingView: RelativeLayout? = null
@@ -73,6 +73,8 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
             reload(false)
         }
 
+        reload()
+
         return view
     }
 
@@ -86,6 +88,8 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
     }
 
     override fun update(urlString: String, title: String, useCache: Boolean) {
+        activity ?: return
+
         selectedTitle = title
         selectedUrlString = urlString
 
@@ -99,7 +103,7 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
                         val filtered = list.filter(it, activity)
 
                         if (filtered.count() > 0) {
-                            adapter?.data = list.filter(it, activity)
+                            adapter?.data = filtered
 
                             listView?.adapter = adapter
                             loadingView?.alpha = 0F

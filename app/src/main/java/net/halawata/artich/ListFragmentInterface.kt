@@ -7,6 +7,10 @@ interface ListFragmentInterface {
 
     val list: MediaList
 
+    var selectedTitle: String
+
+    var selectedUrlString: String
+
     fun reserve(urlString: String, title: String)
 
     fun update(urlString: String, title: String, useCache: Boolean = true)

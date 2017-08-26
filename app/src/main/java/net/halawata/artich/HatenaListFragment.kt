@@ -22,8 +22,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
 
     override val list = HatenaList()
 
-    var selectedTitle = "新着エントリー"
-    var selectedUrlString = ApiUrlString.Hatena.newEntry
+    override var selectedTitle = "新着エントリー"
+    override var selectedUrlString = ApiUrlString.Hatena.newEntry
 
     private var listView: ListView? = null
     private var loadingView: RelativeLayout? = null
@@ -80,6 +80,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
             reload(false)
         }
 
+        reload()
+
         return view
     }
 
@@ -93,6 +95,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
     }
 
     override fun update(urlString: String, title: String, useCache: Boolean) {
+        activity ?: return
+
         selectedTitle = title
         selectedUrlString = urlString
 
@@ -106,7 +110,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
                         val filtered = list.filter(it, activity)
 
                         if (filtered.count() > 0) {
-                            adapter?.data = list.filter(it, activity)
+                            adapter?.data = filtered
 
                             listView?.adapter = adapter
                             loadingView?.alpha = 0F
