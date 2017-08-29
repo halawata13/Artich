@@ -24,6 +24,7 @@ class ArticleListAdapter<T: Article>(val context: Context, var data: ArrayList<T
 
         val view = convertView ?: activity.layoutInflater.inflate(resource, null)
 
+        (view.findViewById(R.id.pub_date) as TextView).text = item.pubDate
         (view.findViewById(R.id.title) as TextView).text = item.title
         (view.findViewById(R.id.url) as TextView).text = item.url
 

@@ -47,7 +47,7 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
         listView?.adapter = adapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
-            val text = ((v as LinearLayout).getChildAt(1) as TextView).text as String
+            val text = (v.findViewById(R.id.url) as TextView).text as String
 
             Uri.parse(text)?.let {
                 startActivity(Intent(Intent.ACTION_VIEW, it))

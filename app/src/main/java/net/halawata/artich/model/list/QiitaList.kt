@@ -11,6 +11,8 @@ import kotlin.collections.ArrayList
 
 class QiitaList(): MediaList {
 
+    override val dateFormat = "yyyy-MM-dd'T'HH:mm:ssz"
+
     override fun parse(content: String): ArrayList<QiitaArticle>? {
         try {
             val items = JSONArray(content)
@@ -21,14 +23,16 @@ class QiitaList(): MediaList {
 
                 val article = QiitaArticle(
                         id = i.toLong(),
-                        title = row.get("title") as? String ?: "",
-                        url = row.get("url") as? String ?: "",
-                        pubDate = row.get("updated_at") as? String ?: "",
-                        user = row.getJSONObject("user").get("id") as? String ?: ""
+                        title = row.getString("title") ?: "",
+                        url = row.getString("url") ?: "",
+                        pubDate = formatDate(row.getString("updated_at")) ?: "",
+                        user = row.getJSONObject("user").getString("id") ?: ""
                 )
 
                 articles.add(article)
             }
+
+            articles.sortByDescending { article -> article.pubDate }
 
             return articles
 

@@ -14,6 +14,8 @@ import kotlin.collections.ArrayList
 
 class HatenaList(): MediaList {
 
+    override val dateFormat = "yyyy-MM-dd'T'HH:mm:ssz"
+
     override fun parse(content: String): ArrayList<HatenaArticle>? {
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
@@ -59,7 +61,7 @@ class HatenaList(): MediaList {
                     if (eventType == XmlPullParser.START_TAG && parser.name == "dc:date") {
                         while (eventType != XmlPullParser.END_TAG || parser.name != "dc:date") {
                             if (eventType == XmlPullParser.TEXT) {
-                                pubDate = parser.text
+                                pubDate = formatDate(parser.text) ?: ""
                             }
 
                             eventType = parser.next()
@@ -84,6 +86,8 @@ class HatenaList(): MediaList {
         } catch (ex: Exception) {
             Log.e(ex.message)
         }
+
+        articles.sortByDescending { article -> article.pubDate }
 
         return articles
     }

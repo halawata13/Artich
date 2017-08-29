@@ -14,6 +14,8 @@ import kotlin.collections.ArrayList
 
 class GNewsList(): MediaList {
 
+    override val dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+
     override fun parse(content: String): ArrayList<GNewsArticle>? {
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
@@ -59,7 +61,7 @@ class GNewsList(): MediaList {
                     if (eventType == XmlPullParser.START_TAG && parser.name == "pubDate") {
                         while (eventType != XmlPullParser.END_TAG || parser.name != "pubDate") {
                             if (eventType == XmlPullParser.TEXT) {
-                                pubDate = parser.text
+                                pubDate = formatDate(parser.text) ?: ""
                             }
 
                             eventType = parser.next()
@@ -86,6 +88,8 @@ class GNewsList(): MediaList {
         } catch (ex: Exception) {
             Log.e(ex.message)
         }
+
+        articles.sortByDescending { article -> article.pubDate }
 
         return articles
     }
