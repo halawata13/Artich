@@ -6,9 +6,7 @@ import net.halawata.artich.enum.Media
 
 class HatenaMute(helper: SQLiteOpenHelper): MediaMute(helper) {
 
-    override fun get(): ArrayList<ListItem> {
-        return fetch(Media.HATENA)
-    }
+    override fun get(): ArrayList<ListItem> = fetch(Media.HATENA)
 
     override fun add(name: String) {
         insert(Media.HATENA, name)

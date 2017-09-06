@@ -23,9 +23,9 @@ class ArticleDialogFragment : DialogFragment() {
     private val menuItems: Array<String>
         get() = when (mediaType) {
             Media.COMMON -> arrayOf()
-            Media.HATENA -> arrayOf("このサイトをミュートする")
-            Media.QIITA -> arrayOf("このユーザーをミュートする")
-            Media.GNEWS -> arrayOf("このサイトをミュートする")
+            Media.HATENA -> arrayOf(getString(R.string.mute_site))
+            Media.QIITA -> arrayOf(getString(R.string.mute_user))
+            Media.GNEWS -> arrayOf(getString(R.string.mute_site))
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -55,9 +55,9 @@ class ArticleDialogFragment : DialogFragment() {
                     }
 
                     targetFragment.onActivityResult(0, i, null)
-                    Toast.makeText(activity, "ミュートしました", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, getString(R.string.mute_done), Toast.LENGTH_LONG).show()
                 })
-                .setNegativeButton("キャンセル", null)
+                .setNegativeButton(getString(R.string.cancel), null)
 
         return builder.create()
     }

@@ -48,7 +48,7 @@ class MuteManagementActivity : AppCompatActivity() {
             mediaList = mediaMute.get()
 
         } catch (ex: Exception) {
-            showError("データの読み込みに失敗しました")
+            showError(getString(R.string.loading_fail_data))
             return
         }
 
@@ -73,13 +73,13 @@ class MuteManagementActivity : AppCompatActivity() {
                     this.listView.invalidateViews()
 
                 } catch (ex: Exception) {
-                    showError("項目の削除に失敗しました")
+                    showError(getString(R.string.delete_fail_item))
                 }
             }
         }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
-            Toast.makeText(this, "左にスワイプするとミュートを解除します", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.caption_mute_item), Toast.LENGTH_LONG).show()
         }
 
         // ミュートがひとつもない場合は説明文を表示

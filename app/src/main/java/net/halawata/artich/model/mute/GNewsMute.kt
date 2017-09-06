@@ -6,9 +6,7 @@ import net.halawata.artich.enum.Media
 
 class GNewsMute(helper: SQLiteOpenHelper): MediaMute(helper) {
 
-    override fun get(): ArrayList<ListItem> {
-        return fetch(Media.GNEWS)
-    }
+    override fun get(): ArrayList<ListItem> = fetch(Media.GNEWS)
 
     override fun add(name: String) {
         insert(Media.GNEWS, name)

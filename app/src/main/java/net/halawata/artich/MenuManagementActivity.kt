@@ -50,7 +50,7 @@ class MenuManagementActivity : AppCompatActivity() {
                 mediaList = mediaMenu.get()
 
             } catch (ex: Exception) {
-                showError("データの読み込みに失敗しました")
+                showError(getString(R.string.loading_fail_data))
                 return
             }
 
@@ -73,7 +73,7 @@ class MenuManagementActivity : AppCompatActivity() {
                     mediaMenu.save(mediaList)
 
                 } catch (ex: Exception) {
-                    showError("データの保存に失敗しました")
+                    showError(getString(R.string.save_fail_data))
                 }
             }
 
@@ -92,7 +92,7 @@ class MenuManagementActivity : AppCompatActivity() {
                         this.listView.invalidateViews()
 
                     } catch (ex: Exception) {
-                        showError("項目の削除に失敗しました")
+                        showError(getString(R.string.delete_fail_item))
                     }
                 }
             }
@@ -132,7 +132,7 @@ class MenuManagementActivity : AppCompatActivity() {
 
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        showError("タグの追加に失敗しました")
+                        showError(getString(R.string.add_fail_item))
                     }
                 }
             }

@@ -6,9 +6,7 @@ import net.halawata.artich.enum.Media
 
 class QiitaMute(helper: SQLiteOpenHelper): MediaMute(helper) {
 
-    override fun get(): ArrayList<ListItem> {
-        return fetch(Media.QIITA)
-    }
+    override fun get(): ArrayList<ListItem> = fetch(Media.QIITA)
 
     override fun add(name: String) {
         insert(Media.QIITA, name)

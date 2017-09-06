@@ -23,8 +23,8 @@ class MenuAdditionFragment : DialogFragment() {
 
         builder.setView(content)
 
-        builder.setTitle("項目を追加")
-                .setPositiveButton("追加", { dialogInterface, i ->
+        builder.setTitle(getString(R.string.add_item))
+                .setPositiveButton(getString(R.string.add), { dialogInterface, i ->
                     val editText = content.findViewById(R.id.menu_addition_text) as EditText
 
                     mediaType?.let {
@@ -42,11 +42,11 @@ class MenuAdditionFragment : DialogFragment() {
 
                         } catch (ex: Exception) {
                             Log.e(ex.message)
-                            activity.showError("データの読み込みに失敗しました")
+                            activity.showError(getString(R.string.loading_fail_data))
                         }
                     }
                 })
-                .setNegativeButton("キャンセル", null)
+                .setNegativeButton(getString(R.string.cancel), null)
 
         return builder.create()
     }

@@ -2,7 +2,6 @@ package net.halawata.artich
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.database.sqlite.SQLiteOpenHelper
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     val qiitaListFragment = QiitaListFragment()
     val gNewsListFragment = GNewsListFragment()
 
-    private val dbHelper: SQLiteOpenHelper = DatabaseHelper(this)
+    private val dbHelper = DatabaseHelper(this)
 
     private lateinit var hatenaMenu: HatenaMenu
     private lateinit var qiitaMenu: QiitaMenu
@@ -117,6 +116,7 @@ class MainActivity : AppCompatActivity() {
 
         // article init
         reloadMenu(Page.HATENA.num)
+        supportActionBar?.title = hatenaListFragment.selectedTitle
     }
 
     override fun onResume() {
@@ -264,6 +264,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * サイドメニューを更新する
+     */
     fun reloadMenu(position: Int) {
         when (position) {
             Page.HATENA.num -> {
@@ -313,8 +316,6 @@ class MainActivity : AppCompatActivity() {
 
             return title
         }
-
-
     }
 
     private enum class Page(val num: Int) {

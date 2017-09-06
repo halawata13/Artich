@@ -21,9 +21,25 @@
 
     <string name="loading_tag">loading…</string>
     <string name="loading_fail_tag">タグの読み込みに失敗しました</string>
+    <string name="loading_fail_data">データの読み込みに失敗しました</string>
+    <string name="save_fail_data">データの保存に失敗しました</string>
+    <string name="delete_fail_item">項目の削除に失敗しました</string>
+    <string name="add_fail_item">タグの追加に失敗しました</string>
+
     <string name="menu_addition_tag">Qiitaのタグから選ぶ</string>
+
+    <string name="mute_site">このサイトをミュートする</string>
+    <string name="mute_user">このユーザーをミュートする</string>
+    <string name="mute_done">ミュートしました</string>
 
     <string name="mute_list_not_found_hatena">ミュートしたサイトが表示されます。\n記事の長押しでミュートすることができます。</string>
     <string name="mute_list_not_found_qiita">ミュートしたユーザーが表示されます。\n記事の長押しでミュートすることができます。</string>
     <string name="mute_list_not_found_gnews">ミュートしたサイトが表示されます。\n記事の長押しでミュートすることができます。</string>
+
+    <string name="caption_mute_item">左にスワイプするとミュートを解除します</string>
+
+    <string name="cancel">キャンセル</string>
+    <string name="add">追加</string>
+    <string name="confirm">確認</string>
+    <string name="add_item">項目を追加</string>
 </resources>

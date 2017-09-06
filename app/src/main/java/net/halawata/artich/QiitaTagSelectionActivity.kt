@@ -109,7 +109,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
             val title = tagName?.let {
                 "「$it」を追加します。"
             } ?: run {
-                "確認"
+                getString(R.string.confirm)
             }
 
             builder.setTitle(title)
@@ -120,7 +120,7 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
 
                         activity.finish()
                     })
-                    .setNegativeButton("キャンセル", null)
+                    .setNegativeButton(getString(R.string.cancel), null)
 
             return builder.create()
         }
