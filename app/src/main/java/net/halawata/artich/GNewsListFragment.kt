@@ -1,9 +1,11 @@
 package net.halawata.artich
 
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -32,15 +34,14 @@ class GNewsListFragment : Fragment(), ListFragmentInterface {
 
     private lateinit var listSwipeRefresh: SwipeRefreshLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_list, container, false)
         listView = view.findViewById(R.id.list) as ListView
         loadingView = view.findViewById(R.id.loading_view) as RelativeLayout
         loadingText = view.findViewById(R.id.loading_text) as TextView
+
+        val loadingProgress = view.findViewById(R.id.loading_progress) as ProgressBar
+        loadingProgress.indeterminateDrawable.setColorFilter(ContextCompat.getColor(context, R.color.gnews), PorterDuff.Mode.SRC_IN)
 
         val data = ArrayList<GNewsArticle>()
         adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
