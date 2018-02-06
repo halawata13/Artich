@@ -30,6 +30,7 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
     private var listView: ListView? = null
     private var loadingView: RelativeLayout? = null
     private var loadingText: TextView? = null
+    private var loadingProgress: ProgressBar? = null
     private var adapter: ArticleListAdapter<HatenaArticle>? = null
 
     private lateinit var listSwipeRefresh: SwipeRefreshLayout
@@ -40,8 +41,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         loadingView = view.findViewById(R.id.loading_view) as RelativeLayout
         loadingText = view.findViewById(R.id.loading_text) as TextView
 
-        val loadingProgress = view.findViewById(R.id.loading_progress) as ProgressBar
-        loadingProgress.indeterminateDrawable.setColorFilter(ContextCompat.getColor(context, R.color.hatena), PorterDuff.Mode.SRC_IN)
+        loadingProgress = view.findViewById(R.id.loading_progress) as ProgressBar
+        loadingProgress?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.hatena), PorterDuff.Mode.SRC_IN)
 
         val data = ArrayList<HatenaArticle>()
         adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
@@ -105,26 +106,38 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         loadingText?.text = resources.getString(R.string.loading)
 
         request(urlString, title, { responseCode, content ->
+            var articles = ArrayList<HatenaArticle>()
+
             content?.let {
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    list.parse(content)?.let {
-                        val filtered = list.filter(it, activity)
+                when (responseCode) {
+                    HttpURLConnection.HTTP_OK -> {
+                        list.parse(content)?.let {
+                            articles = list.filter(it, activity)
 
-                        if (filtered.count() > 0) {
-                            adapter?.data = filtered
-
-                            listView?.adapter = adapter
-                            loadingView?.alpha = 0F
-                        } else {
-                            loadingText?.text = resources.getString(R.string.loading_not_found)
+                            if (articles.count() > 0) {
+                                loadingView?.alpha = 0F
+                            } else {
+                                loadingText?.text = resources.getString(R.string.loading_not_found)
+                            }
                         }
                     }
-                } else {
-                    loadingText?.text = resources.getString(R.string.loading_fail)
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        loadingText?.text = resources.getString(R.string.loading_not_found)
+                    }
+                    else -> {
+                        loadingText?.text = resources.getString(R.string.loading_fail)
+                    }
                 }
             } ?: run {
                 loadingText?.text = resources.getString(R.string.loading_fail)
             }
+
+            if (articles.count() == 0) {
+                loadingProgress?.visibility = View.INVISIBLE
+            }
+
+            adapter?.data = articles
+            listView?.adapter = adapter
 
             listSwipeRefresh.isRefreshing = false
         }, useCache)
