@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#808080</color>
+    <color name="colorPrimaryDark">#333</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="common">#6D6D6D</color>
-    <color name="hatena">#3e7998</color>
-    <color name="qiita">#5D983F</color>
-    <color name="gnews">#C85A52</color>
+    <color name="hatena">#00b2f0</color>
+    <color name="qiita">#00cc65</color>
+    <color name="gnews">#ff765a</color>
 
     <color name="common_active">#898989</color>
 
@@ -17,5 +17,4 @@
 
     <color name="text_color_default">#333</color>
     <color name="text_color_disabled">#ccc</color>
-
 </resources>
