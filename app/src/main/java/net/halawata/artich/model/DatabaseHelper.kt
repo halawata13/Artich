@@ -6,10 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DatabaseHelper(val context: Context): SQLiteOpenHelper(context, "artich.db", null, 1) {
 
-    override fun onOpen(db: SQLiteDatabase?) {
-        super.onOpen(db)
-    }
-
     override fun onCreate(p0: SQLiteDatabase?) {
         p0?.execSQL("CREATE TABLE t_menu_common (id INTEGER PRIMARY KEY, name TEXT)")
         p0?.execSQL("INSERT INTO t_menu_common(id, name) VALUES(1, 'JavaScript')")

@@ -17,7 +17,7 @@ class ConfigActivity : AppCompatActivity() {
     var configTypeNum = ConfigList.Type.MENU.num
 
     companion object {
-        val configTypeKey = "configTypeKey"
+        const val configTypeKey = "configTypeKey"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +25,7 @@ class ConfigActivity : AppCompatActivity() {
         setContentView(R.layout.activity_config)
 
         // list setup
-        val listView = findViewById(R.id.config_list) as ListView
+        val listView = findViewById<ListView>(R.id.config_list)
 
         configTypeNum = intent.getIntExtra(ConfigActivity.configTypeKey, ConfigList.Type.MENU.num)
 

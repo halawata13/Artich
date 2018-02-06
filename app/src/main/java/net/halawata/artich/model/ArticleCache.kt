@@ -7,7 +7,7 @@ import java.io.IOException
 
 object ArticleCache {
 
-    private val cacheSize: Long = 10 * 1024 * 1024
+    private const val cacheSize: Long = 10 * 1024 * 1024
 
     fun init(context: Context) {
 

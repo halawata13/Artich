@@ -61,12 +61,12 @@ class MainActivity : AppCompatActivity() {
         gnewsMenu = GNewsMenu(dbHelper, resources)
 
         // TabLayout setup
-        val tabLayout = findViewById(R.id.tab_layout) as TabLayout
+        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.hatena_tab_name))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.qiita_tab_name))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.gnews_tab_name))
 
-        viewPager = findViewById(R.id.view_pager) as ViewPager
+        viewPager = findViewById(R.id.view_pager)
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -87,8 +87,8 @@ class MainActivity : AppCompatActivity() {
 
         // Drawer setup
         val hatenaMenu = HatenaMenu(dbHelper, resources)
-        drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
-        drawerListView = findViewById(R.id.drawer) as ListView
+        drawerLayout = findViewById(R.id.drawer_layout)
+        drawerListView = findViewById(R.id.drawer)
         drawerList = hatenaMenu.getMenuList()
 
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity() {
      * ページャー移動時
      */
     fun selectPage(position: Int) {
-        val tabLayout = findViewById(R.id.tab_layout) as TabLayout
+        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
 
         when (position) {
             Page.HATENA.num -> {

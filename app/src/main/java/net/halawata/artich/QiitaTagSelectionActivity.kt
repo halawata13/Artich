@@ -25,15 +25,15 @@ import java.net.HttpURLConnection
 class QiitaTagSelectionActivity : AppCompatActivity() {
 
     companion object {
-        val mediaTypeKey = "mediaTypeKey"
+        const val mediaTypeKey = "mediaTypeKey"
     }
 
     lateinit var mediaType: Media
 
-    var adapter: QiitaTagListAdapter? = null
-    var listView: ListView? = null
-    var loadingView: RelativeLayout? = null
-    var loadingText: TextView? = null
+    private var adapter: QiitaTagListAdapter? = null
+    private var listView: ListView? = null
+    private var loadingView: RelativeLayout? = null
+    private var loadingText: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +45,12 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
         val configList = ConfigList(resources, ConfigList.Type.MENU)
         mediaType = configList.getMediaId(mediaString) ?: Media.COMMON
 
-        loadingView = findViewById(R.id.loading_view) as RelativeLayout
-        loadingText = findViewById(R.id.loading_text) as TextView
+        loadingView = findViewById(R.id.loading_view)
+        loadingText = findViewById(R.id.loading_text)
 
         // list setup
-        adapter = QiitaTagListAdapter(this, ArrayList<QiitaTag>(), R.layout.qiita_tag_list_item)
-        listView = findViewById(R.id.qiita_tag_list) as ListView
+        adapter = QiitaTagListAdapter(this, ArrayList(), R.layout.qiita_tag_list_item)
+        listView = findViewById(R.id.qiita_tag_list)
         listView?.adapter = adapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -60,7 +60,8 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
             }
 
             adapter?.data?.get(i)?.title?.let {
-                val dialog = ConfirmDialogFragment(it)
+                val dialog = ConfirmDialogFragment()
+                dialog.tagName = it
                 dialog.show(fragmentManager, "qiitaTagAddition")
             }
         }
@@ -100,7 +101,9 @@ class QiitaTagSelectionActivity : AppCompatActivity() {
     /**
      * タグ選択確認ダイアログ
      */
-    class ConfirmDialogFragment(private val tagName: String? = null) : DialogFragment() {
+    class ConfirmDialogFragment : DialogFragment() {
+
+        var tagName: String? = null
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val builder = AlertDialog.Builder(activity)

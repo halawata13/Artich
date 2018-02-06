@@ -12,7 +12,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import kotlin.collections.ArrayList
 
-class HatenaList(): MediaList {
+class HatenaList: MediaList {
 
     override val dateFormat = "yyyy-MM-dd'T'HH:mm:ssz"
 

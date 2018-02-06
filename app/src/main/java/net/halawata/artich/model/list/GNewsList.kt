@@ -12,7 +12,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import kotlin.collections.ArrayList
 
-class GNewsList(): MediaList {
+class GNewsList: MediaList {
 
     override val dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
 

@@ -25,6 +25,8 @@ class QiitaTagList {
                 ))
             }
 
+            list.sortBy { item -> item.title }
+
             return list
 
         } catch (ex: JSONException) {

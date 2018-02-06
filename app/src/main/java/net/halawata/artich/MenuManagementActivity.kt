@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
+import android.widget.AdapterView
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager
@@ -24,7 +25,7 @@ import net.halawata.artich.model.menu.MediaMenuInterface
 class MenuManagementActivity : AppCompatActivity() {
 
     companion object {
-        val mediaTypeKey = "menuManagementMediaTypeKey"
+        const val mediaTypeKey = "menuManagementMediaTypeKey"
     }
 
     lateinit var mediaMenu: MediaMenuInterface
@@ -55,7 +56,7 @@ class MenuManagementActivity : AppCompatActivity() {
             }
 
             val listAdapter = MenuManagementListAdapter(this, mediaList)
-            listView = findViewById(R.id.menu_management_list) as DynamicListView
+            listView = findViewById(R.id.menu_management_list)
 
             listView.enableDragAndDrop()
             listView.setDraggableManager(TouchViewDraggableManager(R.id.drag_drop_list_grip))
@@ -97,8 +98,12 @@ class MenuManagementActivity : AppCompatActivity() {
                 }
             }
 
-            val addMenu = findViewById(R.id.menu_management_add_menu) as FloatingActionsMenu
-            val addTextBtn = findViewById(R.id.menu_management_add_text_btn) as FloatingActionButton
+            listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                Toast.makeText(this, getString(R.string.caption_menu_item), Toast.LENGTH_LONG).show()
+            }
+
+            val addMenu = findViewById<FloatingActionsMenu>(R.id.menu_management_add_menu)
+            val addTextBtn = findViewById<FloatingActionButton>(R.id.menu_management_add_text_btn)
             addTextBtn.setOnClickListener {
                 val dialog = MenuAdditionFragment()
                 dialog.mediaType = mediaType
@@ -107,7 +112,7 @@ class MenuManagementActivity : AppCompatActivity() {
                 addMenu.collapse()
             }
 
-            val addQiitaTagBtn = findViewById(R.id.menu_management_add_qiita_tag_btn) as FloatingActionButton
+            val addQiitaTagBtn = findViewById<FloatingActionButton>(R.id.menu_management_add_qiita_tag_btn)
             addQiitaTagBtn.setOnClickListener {
                 addMenu.collapse()
 

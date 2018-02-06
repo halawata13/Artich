@@ -12,7 +12,7 @@
     <string name="new_entry">新着エントリー</string>
     <string name="hot_entry">人気エントリー</string>
 
-    <string name="menu_management_activity_title">サイドメニュー編集</string>
+    <string name="menu_management_activity_title">メニューカスタマイズ</string>
     <string name="mute_management_activity_title">ミュート</string>
 
     <string name="loading">loading…</string>
@@ -36,6 +36,7 @@
     <string name="mute_list_not_found_qiita">ミュートしたユーザーが表示されます。\n記事の長押しでミュートすることができます。</string>
     <string name="mute_list_not_found_gnews">ミュートしたサイトが表示されます。\n記事の長押しでミュートすることができます。</string>
 
+    <string name="caption_menu_item">左にスワイプすると削除します</string>
     <string name="caption_mute_item">左にスワイプするとミュートを解除します</string>
 
     <string name="cancel">キャンセル</string>

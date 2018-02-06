@@ -9,7 +9,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import kotlin.collections.ArrayList
 
-class QiitaList(): MediaList {
+class QiitaList: MediaList {
 
     override val dateFormat = "yyyy-MM-dd'T'HH:mm:ssz"
 

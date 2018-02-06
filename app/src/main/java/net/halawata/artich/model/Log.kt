@@ -1,19 +1,9 @@
 package net.halawata.artich.model
 
 import android.util.Log
-import net.halawata.artich.BuildConfig
 import java.util.regex.Pattern
 
 object Log {
-
-    /**
-     * デバッグログを出力する
-     */
-    fun d(msg: String?) {
-        if (!BuildConfig.DEBUG) return
-
-        Log.d(tag, msg)
-    }
 
     /**
      * エラーログを出力する

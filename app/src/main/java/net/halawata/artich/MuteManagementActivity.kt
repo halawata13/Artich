@@ -23,7 +23,7 @@ import net.halawata.artich.model.mute.MediaMuteInterface
 class MuteManagementActivity : AppCompatActivity() {
 
     companion object {
-        val mediaTypeKey = "muteManagementMediaTypeKey"
+        const val mediaTypeKey = "muteManagementMediaTypeKey"
     }
 
     lateinit var mediaMute : MediaMuteInterface
@@ -53,7 +53,7 @@ class MuteManagementActivity : AppCompatActivity() {
         }
 
         val listAdapter = MuteManagementListAdapter(this, mediaList)
-        listView = findViewById(R.id.mute_management_list) as DynamicListView
+        listView = findViewById(R.id.mute_management_list)
 
         val simpleSwipeUndoAdapter = SimpleSwipeUndoAdapter(listAdapter, this, OnDismissCallback { listView, reverseSortedPositions ->
         })
@@ -84,7 +84,7 @@ class MuteManagementActivity : AppCompatActivity() {
 
         // ミュートがひとつもない場合は説明文を表示
         if (mediaList.count() == 0) {
-            (findViewById(R.id.mute_management_not_found) as RelativeLayout).visibility = View.VISIBLE
+            (findViewById<RelativeLayout>(R.id.mute_management_not_found)).visibility = View.VISIBLE
 
             val text = when (mediaType) {
                 Media.HATENA -> resources.getString(R.string.mute_list_not_found_hatena)
@@ -96,7 +96,7 @@ class MuteManagementActivity : AppCompatActivity() {
                 }
             }
 
-            (findViewById(R.id.mute_management_not_found_text) as TextView).text = text
+            (findViewById<TextView>(R.id.mute_management_not_found_text)).text = text
         }
     }
 
