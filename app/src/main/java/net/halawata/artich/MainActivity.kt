@@ -319,8 +319,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private enum class Page(val num: Int) {
-        HATENA(0),
+        HATENA(2),
         QIITA(1),
-        GNEWS(2),
+        GNEWS(0),
     }
 }

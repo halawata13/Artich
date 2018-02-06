@@ -23,8 +23,8 @@ class ConfigList(val resources: Resources, val type: Type) {
 
         menuItems.add(ConfigListItem(
                 id = id++,
-                mediaId = Media.HATENA,
-                title = resources.getString(R.string.hatena_list_name)
+                mediaId = Media.GNEWS,
+                title = resources.getString(R.string.gnews_list_name)
         ))
 
         menuItems.add(ConfigListItem(
@@ -35,8 +35,8 @@ class ConfigList(val resources: Resources, val type: Type) {
 
         menuItems.add(ConfigListItem(
                 id = id,
-                mediaId = Media.GNEWS,
-                title = resources.getString(R.string.gnews_list_name)
+                mediaId = Media.HATENA,
+                title = resources.getString(R.string.hatena_list_name)
         ))
 
         return menuItems
