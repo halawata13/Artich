@@ -5,9 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="common">#6D6D6D</color>
-    <color name="hatena">#00b2f0</color>
-    <color name="qiita">#00cc65</color>
-    <color name="gnews">#ff765a</color>
+    <color name="hatena">#0091EA</color>
+    <color name="qiita">#558B2F</color>
+    <color name="gnews">#F4511E</color>
+
+    <color name="hatena_dark">#00558E</color>
+    <color name="qiita_dark">#305418</color>
+    <color name="gnews_dark">#952F05</color>
 
     <color name="common_active">#898989</color>
 

@@ -2,7 +2,6 @@ package net.halawata.artich
 
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -49,11 +48,8 @@ class HatenaListFragment : Fragment(), ListFragmentInterface {
         listView?.adapter = adapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
-            val text = (v.findViewById(R.id.url) as TextView).text as String
-
-            Uri.parse(text)?.let {
-                startActivity(Intent(Intent.ACTION_VIEW, it))
-            }
+            val urlString = (v.findViewById(R.id.url) as TextView).text as String
+            launchUrl(activity, context, urlString, R.color.hatena)
         }
 
         listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
