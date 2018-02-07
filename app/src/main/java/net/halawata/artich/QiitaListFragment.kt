@@ -32,22 +32,22 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
 
     private lateinit var listSwipeRefresh: SwipeRefreshLayout
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
         listView = view.findViewById(R.id.list) as ListView
         loadingView = view.findViewById(R.id.loading_view) as RelativeLayout
         loadingText = view.findViewById(R.id.loading_text) as TextView
 
         loadingProgress = view.findViewById(R.id.loading_progress) as ProgressBar
-        loadingProgress?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.qiita), PorterDuff.Mode.SRC_IN)
+        loadingProgress?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context!!, R.color.qiita), PorterDuff.Mode.SRC_IN)
 
         val data = ArrayList<QiitaArticle>()
-        adapter = ArticleListAdapter(context, data, R.layout.article_list_item)
+        adapter = ArticleListAdapter(context!!, data, R.layout.article_list_item)
         listView?.adapter = adapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
             val urlString = (v.findViewById(R.id.url) as TextView).text as String
-            launchUrl(activity, context, urlString, R.color.qiita)
+            launchUrl(activity!!, context!!, urlString, R.color.qiita)
         }
 
         listView?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, v, position, id ->
@@ -102,7 +102,7 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
                 when (responseCode) {
                     HttpURLConnection.HTTP_OK -> {
                         list.parse(content)?.let {
-                            articles = list.filter(it, activity)
+                            articles = list.filter(it, activity!!)
 
                             if (articles.count() > 0) {
                                 loadingView?.alpha = 0F
@@ -135,7 +135,7 @@ class QiitaListFragment : Fragment(), ListFragmentInterface {
 
     override fun applyFilter() {
         adapter?.let {
-            adapter?.data = list.filter(it.data, activity)
+            adapter?.data = list.filter(it.data, activity!!)
             adapter?.notifyDataSetChanged()
         }
     }

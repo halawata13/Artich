@@ -33,7 +33,7 @@ class ArticleDialogFragment : DialogFragment() {
 
         builder.setTitle(title)
                 .setItems(menuItems, { dialogInterface, i ->
-                    val helper = DatabaseHelper(activity)
+                    val helper = DatabaseHelper(activity!!)
 
                     when (mediaType) {
                         Media.COMMON -> {}
@@ -54,7 +54,7 @@ class ArticleDialogFragment : DialogFragment() {
                         }
                     }
 
-                    targetFragment.onActivityResult(0, i, null)
+                    targetFragment?.onActivityResult(0, i, null)
                     Toast.makeText(activity, getString(R.string.mute_done), Toast.LENGTH_LONG).show()
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

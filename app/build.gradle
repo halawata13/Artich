@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "net.halawata.artich"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,18 +31,21 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 
-    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.android.support:customtabs:27.0.2'
     testCompile 'junit:junit:4.12'
 }
 repositories {
     mavenCentral()
 }
+
+apply plugin: 'kotlin-android-extensions'
