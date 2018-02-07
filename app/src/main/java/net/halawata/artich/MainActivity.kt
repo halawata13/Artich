@@ -240,24 +240,24 @@ class MainActivity : AppCompatActivity() {
         when (position) {
             Page.HATENA.num -> {
                 supportActionBar?.title = hatenaListFragment.selectedTitle
-                window.statusBarColor = resources.getColor(R.color.hatena)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.hatena, null))
+                window.statusBarColor = resources.getColor(R.color.hatena_dark)
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.hatena))
             }
 
             Page.QIITA.num -> {
                 supportActionBar?.title = qiitaListFragment.selectedTitle
-                window.statusBarColor = resources.getColor(R.color.qiita)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.qiita, null))
+                window.statusBarColor = resources.getColor(R.color.qiita_dark)
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.qiita))
             }
 
             Page.GNEWS.num -> {
                 supportActionBar?.title = gNewsListFragment.selectedTitle
-                window.statusBarColor = resources.getColor(R.color.gnews)
                 supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gnews, null))
+                window.statusBarColor = resources.getColor(R.color.gnews_dark)
 
                 tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.gnews))
             }
