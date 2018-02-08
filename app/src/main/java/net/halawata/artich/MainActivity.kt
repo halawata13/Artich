@@ -86,10 +86,10 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
         // Drawer setup
-        val hatenaMenu = HatenaMenu(dbHelper, resources)
+        val gnewsMenu = HatenaMenu(dbHelper, resources)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerListView = findViewById(R.id.drawer)
-        drawerList = hatenaMenu.getMenuList()
+        drawerList = gnewsMenu.getMenuList()
 
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
         drawerListAdapter = MenuListAdapter(this, drawerList, R.layout.drawer_list_item)
@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // article init
-        reloadMenu(Page.HATENA.num)
-        supportActionBar?.title = hatenaListFragment.selectedTitle
+        reloadMenu(Page.GNEWS.num)
+        supportActionBar?.title = gNewsListFragment.selectedTitle
     }
 
     override fun onResume() {

@@ -32,7 +32,7 @@ class ArticleDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
 
         builder.setTitle(title)
-                .setItems(menuItems, { dialogInterface, i ->
+                .setPositiveButton("ミュートする", { dialog, which ->
                     val helper = DatabaseHelper(activity!!)
 
                     when (mediaType) {
@@ -54,7 +54,7 @@ class ArticleDialogFragment : DialogFragment() {
                         }
                     }
 
-                    targetFragment?.onActivityResult(0, i, null)
+                    targetFragment?.onActivityResult(0, mediaType.id, null)
                     Toast.makeText(activity, getString(R.string.mute_done), Toast.LENGTH_LONG).show()
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
